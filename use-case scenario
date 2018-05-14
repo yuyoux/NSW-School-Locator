@@ -1,0 +1,6 @@
+                
+                  mashup --> input suburb(key: postcode)
+
+government school(key:school ID)       vs.      non-government school(key:school ID) 
+
+--> enrollment information, selective school entry score, attendance rate, special support
