@@ -1,0 +1,91 @@
+from mongoengine import IntField, Document, EmbeddedDocument,ListField, EmbeddedDocumentField, StringField
+
+class Year(EmbeddedDocument):
+    year = IntField(required=True)
+    rate = StringField()
+
+    def __init__(self, year,rate,*args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.year = year
+        self.rate = rate
+
+
+class Attendance(Document):
+    code = IntField(required=True)
+    name = StringField(required=True)
+    year = ListField(EmbeddedDocumentField(Year))
+
+    def __init__(self, code,name, year=[],*args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.code = code
+        self.name = name
+        self.year = year
+
+class Score(EmbeddedDocument):
+    year = IntField(required=True)
+    score = IntField(required=True)
+
+    def __init__(self, year,score,*args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.year = year
+        self.score = score
+
+class EntryScore(Document):
+    name = StringField(required=True)
+    score = ListField(EmbeddedDocumentField(Score))
+
+    def __init__(self, name,score=[],*args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.name = name
+        self.score = score
+
+class Nongov(Document):
+    name = StringField(required=True)
+    schooling = StringField(required=True)
+    school_gender = StringField(required=True)
+    street = StringField(required=True)
+    suburb = StringField(required=True)
+    postcode = IntField(required=True)
+
+    def __init__(self, name, schooling, school_gender, street, suburb, postcode,*args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.name = name
+        self.schooling = schooling
+        self.school_gender = school_gender
+        self.street = street
+        self.suburb = suburb
+        self.postcode = postcode
+
+class Gov(Document):
+    code = IntField(required=True)
+    name = StringField(required=True)
+    schooling = StringField(required=True)
+    school_gender = StringField(required=True)
+    street = StringField(required=True)
+    suburb = StringField(required=True)
+    postcode = IntField(required=True)
+
+    def __init__(self, code,name, schooling, school_gender, street, suburb, postcode,*args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.code = code
+        self.name = name
+        self.schooling = schooling
+        self.school_gender = school_gender
+        self.street = street
+        self.suburb = suburb
+        self.postcode = postcode
+
+class Spec(Document):
+    code = IntField(required=True)
+    name = StringField(required=True)
+    suburb = StringField(required=True)
+    postcode = IntField(required=True)
+    class_type = StringField()
+
+    def __init__(self, code,name, suburb, postcode,class_type,*args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.code = code
+        self.name = name
+        self.suburb = suburb
+        self.postcode = postcode
+        self.class_type = class_type
