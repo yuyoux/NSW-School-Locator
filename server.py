@@ -215,6 +215,9 @@ def search_gov():
                 output[school.name] = content
         return jsonify(output), 200
 
+    if not name and not suburb and not postcode:
+        return jsonify(Input = False), 404
+
 
 if __name__ == "__main__":
     app.run()
