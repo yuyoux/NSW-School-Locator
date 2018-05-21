@@ -83,7 +83,7 @@ with open('specialist school.csv','r',encoding = "ISO-8859-1") as f:
         spec.save()
  
 
-
+#### look up non-government school
 @app.route("/school/nongov", methods=['GET'])
 def search_nongov():
     parser = reqparse.RequestParser()
@@ -98,6 +98,23 @@ def search_nongov():
         content['street'] = school.street
         content['suburb'] = school.suburb
         content['postcode'] = school.postcode
+        output[school.name] = content
+    return jsonify(output), 200
+ 
+#### look up school with special support 
+@app.route("/school/specialist", methods=['GET'])
+def search_specialist():
+    parser = reqparse.RequestParser()
+    parser.add_argument('postcode',type=int)
+    args = parser.parse_args()
+    postcode = args.get("postcode")
+    output = OrderedDict()
+    for school in Spec.objects(postcode = postcode):
+        content = OrderedDict()
+        content['code'] = school.code
+        content['suburb'] = school.suburb
+        content['postcode'] = school.postcode
+        content['class type'] = school.class_type
         output[school.name] = content
     return jsonify(output), 200
 
