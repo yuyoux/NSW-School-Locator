@@ -160,5 +160,61 @@ def search_specialist():
         output[school.name] = content
     return jsonify(output), 200
 
+
+#### look up government school
+@app.route('/school/gov', methods=['GET'])
+def search_gov():
+    parser = reqparse.RequestParser()
+    parser.add_argument('code', type=int)
+    parser.add_argument('postcode', type=int)
+    parser.add_argument('suburb', type=str)
+    parser.add_argument('street', type=str)
+    parser.add_argument('name', type=str)
+    args = parser.parse_args()
+    postcode = args.get('postcode')
+    if postcode:
+        output = OrderedDict()
+        for school in Gov.objects(postcode=postcode):
+            content = OrderedDict()
+            content['schooling'] = school.schooling
+            content['school gender'] = school.school_gender
+            content['street'] = school.street
+            content['suburb'] = school.suburb
+            content['postcode'] = school.postcode
+            content['code'] = school.code
+            output[school.name] = content
+        return jsonify(output), 200
+
+    suburb = args.get('suburb')
+    if suburb:
+        output = OrderedDict()
+        for school in Gov.objects(suburb=suburb):
+            content = OrderedDict()
+            content['schooling'] = school.schooling
+            content['school gender'] = school.school_gender
+            content['street'] = school.street
+            content['suburb'] = school.suburb
+            content['postcode'] = school.postcode
+            content['code'] = school.code
+            output[school.name] = content
+        return jsonify(output), 200
+
+    name = args.get('name')
+    if name:
+        name = name.lower()
+        output = OrderedDict()
+        for school in Gov.objects:
+            if name in school.name.lower():
+                content = OrderedDict()
+                content['schooling'] = school.schooling
+                content['school gender'] = school.school_gender
+                content['street'] = school.street
+                content['suburb'] = school.suburb
+                content['postcode'] = school.postcode
+                content['code'] = school.code
+                output[school.name] = content
+        return jsonify(output), 200
+
+
 if __name__ == "__main__":
     app.run()
