@@ -110,6 +110,9 @@ def search_specialist():
     postcode = args.get("postcode")
     output = OrderedDict()
     for school in Spec.objects(postcode = postcode):
+        if school.name in output:
+            output[school.name]['class type'].append(school.class_type)
+            continue
         content = OrderedDict()
         content['code'] = school.code
         content['suburb'] = school.suburb
