@@ -88,18 +88,49 @@ with open('specialist school.csv','r',encoding = "ISO-8859-1") as f:
 def search_nongov():
     parser = reqparse.RequestParser()
     parser.add_argument('postcode',type=int)
+    parser.add_argument('suburb', type=str)
+    parser.add_argument('street', type=str)
+    parser.add_argument('name', type=str)
     args = parser.parse_args()
     postcode = args.get("postcode")
-    output = OrderedDict()
-    for school in Nongov.objects(postcode = postcode):
-        content = OrderedDict()
-        content['schooling'] = school.schooling
-        content['school gender'] = school.school_gender
-        content['street'] = school.street
-        content['suburb'] = school.suburb
-        content['postcode'] = school.postcode
-        output[school.name] = content
-    return jsonify(output), 200
+    if postcode:
+        output = OrderedDict()
+        for school in Nongov.objects(postcode = postcode):
+            content = OrderedDict()
+            content['schooling'] = school.schooling
+            content['school gender'] = school.school_gender
+            content['street'] = school.street
+            content['suburb'] = school.suburb
+            content['postcode'] = school.postcode
+            output[school.name] = content
+        return jsonify(output), 200
+    suburb = args.get("suburb")
+    if suburb:
+        output = OrderedDict()
+        for school in Nongov.objects(suburb = suburb):
+            content = OrderedDict()
+            content['schooling'] = school.schooling
+            content['school gender'] = school.school_gender
+            content['street'] = school.street
+            content['suburb'] = school.suburb
+            content['postcode'] = school.postcode
+            output[school.name] = content
+        return jsonify(output), 200
+    name = args.get('name')
+    if name:
+        name = name.lower()
+        output = OrderedDict()
+        for school in Nongov.objects:
+            if name in school.name.lower():
+                content = OrderedDict()
+                content['schooling'] = school.schooling
+                content['school gender'] = school.school_gender
+                content['street'] = school.street
+                content['suburb'] = school.suburb
+                content['postcode'] = school.postcode
+                output[school.name] = content
+        return jsonify(output), 200
+
  
 #### look up school with special support 
 @app.route("/school/specialist", methods=['GET'])
