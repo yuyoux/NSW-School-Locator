@@ -14,6 +14,14 @@ from modal import Attendance, Year, EntryScore, Score, Nongov, Gov, Spec
 
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
+###### disable class is saved in a dict
+disable ={1:"Supporting students with autism (Au)", 2:"Supporting students with moderate and students with severe intellectual disability (IO/IS)",
+          3:"Supporting students with a range of disabilities with similar support needs (MC Multi Categorical)", 4:"Supporting students with disability prior to school (EI Early Intervention)",
+          5:"Supporting students with moderate intellectual disability (IO)", 6:"Supporting students with autism and/or moderate intellectual disability (IO/Au)",
+          7:"Supporting students with mild intellectual disability (IM)", 8:"Supporting students with mental health issues (ED Emotional Disturbance)" ,
+          9:"Supporting students who are deaf or hearing impaired (H)", 10:"Supporting students with physical disability (P)",
+          11:"Supporting students with behavioural issues (BD)", 12:"Supporting students with severe intellectual disability (IS)",
+          13:"Supporting students who are blind or vision impaired (V)"}
 
 ###### Upload source to the database
 
