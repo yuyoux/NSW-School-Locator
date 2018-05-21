@@ -1,6 +1,9 @@
                 
-                  mashup --> input suburb(key: postcode)
+                  mashup --> input suburb(key: postcode/ suburb/ name)
 
-government school(key:school ID)       vs.      non-government school(key:school ID) 
+government school(key:postcode)   vs.  non-government school(key:postcode)  vs.   special support school(key:postcode)
 
---> enrollment information, selective school entry score, attendance rate, special support
+--> enrollment information, selective school entry score, attendance rate, specific information
+--> Google Map API
+
+Last modified: 2018/5/21
