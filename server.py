@@ -11,8 +11,11 @@ import jxmlease
 import csv
 from modal import Attendance, Year, EntryScore, Score, Nongov, Gov, Spec
 
-###### Upload source to the database
+
 app = Flask(__name__)
+app.config['JSON_SORT_KEYS'] = False
+
+###### Upload source to the database
 
 cwd = os.getcwd()
 cwd1 = cwd + '/attendance.csv'
@@ -78,7 +81,25 @@ with open('specialist school.csv','r',encoding = "ISO-8859-1") as f:
     for line in e:
         spec = Spec(line[0],line[1],line[3],line[2],line[6])
         spec.save()
+ 
 
+
+@app.route("/school/nongov", methods=['GET'])
+def search_nongov():
+    parser = reqparse.RequestParser()
+    parser.add_argument('postcode',type=int)
+    args = parser.parse_args()
+    postcode = args.get("postcode")
+    output = OrderedDict()
+    for school in Nongov.objects(postcode = postcode):
+        content = OrderedDict()
+        content['schooling'] = school.schooling
+        content['school gender'] = school.school_gender
+        content['street'] = school.street
+        content['suburb'] = school.suburb
+        content['postcode'] = school.postcode
+        output[school.name] = content
+    return jsonify(output), 200
 
 if __name__ == "__main__":
     app.run()
