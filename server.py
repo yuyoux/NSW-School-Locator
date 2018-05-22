@@ -14,6 +14,7 @@ from modal import Attendance, Year, EntryScore, Score, Nongov, Gov, Spec
 
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
+connect(host = 'mongodb://jnie1026:Ray38208382@ds151809.mlab.com:51809/my_database')
 ###### disable class is saved in a dict
 disable ={1:"Supporting students with autism (Au)", 2:"Supporting students with moderate and students with severe intellectual disability (IO/IS)",
           3:"Supporting students with a range of disabilities with similar support needs (MC Multi Categorical)", 4:"Supporting students with disability prior to school (EI Early Intervention)",
