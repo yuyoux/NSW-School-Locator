@@ -150,25 +150,48 @@ def search_specialist():
     parser.add_argument('name', type=str)
     parser.add_argument('code', type=int)
     parser.add_argument('class_type', type=int)
+    flag = 1
     args = parser.parse_args()
+    class_type = args.get('class_type')
     postcode = args.get("postcode")
     if postcode:
+        if flag == 0: ####### Did not enter disable class
+            output = OrderedDict()
+            for school in Spec.objects(postcode = postcode):
+                if school.name in output:
+                    output[school.name]['class type'].append(school.class_type)
+                    continue
+                content = OrderedDict()
+                content['code'] = school.code
+                content['suburb'] = school.suburb
+                content['postcode'] = school.postcode
+                content['class type'] = [school.class_type]
+                for score_record in EntryScore.objects(name = school.name):
+                    entry_score = OrderedDict()
+                    for score in score_record.score:
+                        entry_score[str(score.year)] = score.score
+                    content['entry score'] = entry_score
+                for attendace in Attendance.objects(code = school.code):
+                    attend = OrderedDict()
+                    for year in attendace.year:
+                        attend[str(year.year)] = year.rate
+                    content['attendance rate'] = attend
+                output[school.name] = content
+            return jsonify(output), 200
+
         output = OrderedDict()
-        for school in Spec.objects(postcode = postcode):
-            if school.name in output:
-                output[school.name]['class type'].append(school.class_type)
-                continue
+        for school in Spec.objects(postcode=postcode,class_type = disable[int(class_type)]):
             content = OrderedDict()
             content['code'] = school.code
             content['suburb'] = school.suburb
             content['postcode'] = school.postcode
             content['class type'] = [school.class_type]
-            for score_record in EntryScore.objects(name = school.name):
+            for score_record in EntryScore.objects(name=school.name):
                 entry_score = OrderedDict()
                 for score in score_record.score:
                     entry_score[str(score.year)] = score.score
                 content['entry score'] = entry_score
-            for attendace in Attendance.objects(code = school.code):
+            for attendace in Attendance.objects(code=school.code):
                 attend = OrderedDict()
                 for year in attendace.year:
                     attend[str(year.year)] = year.rate
@@ -176,50 +199,93 @@ def search_specialist():
             output[school.name] = content
         return jsonify(output), 200
 
+
     suburb = args.get("suburb")
     if suburb:
+        if flag == 0:
+            output = OrderedDict()
+            for school in Spec.objects(suburb = suburb):
+                if school.name in output:
+                    output[school.name]['class type'].append(school.class_type)
+                    continue
+                content = OrderedDict()
+                content['code'] = school.code
+                content['suburb'] = school.suburb
+                content['postcode'] = school.postcode
+                content['class type'] = [school.class_type]
+                for score_record in EntryScore.objects(name = school.name):
+                    entry_score = OrderedDict()
+                    for score in score_record.score:
+                        entry_score[str(score.year)] = score.score
+                    content['entry score'] = entry_score
+                for attendace in Attendance.objects(code = school.code):
+                    attend = OrderedDict()
+                    for year in attendace.year:
+                        attend[str(year.year)] = year.rate
+                    content['attendance rate'] = attend
+                output[school.name] = content
+                print(output)
+            return jsonify(output), 200
+
         output = OrderedDict()
-        for school in Spec.objects(suburb = suburb):
-            if school.name in output:
-                output[school.name]['class type'].append(school.class_type)
-                continue
+        for school in Spec.objects(suburb = suburb, class_type=disable[int(class_type)]):
             content = OrderedDict()
             content['code'] = school.code
             content['suburb'] = school.suburb
             content['postcode'] = school.postcode
             content['class type'] = [school.class_type]
-            for score_record in EntryScore.objects(name = school.name):
+            for score_record in EntryScore.objects(name=school.name):
                 entry_score = OrderedDict()
                 for score in score_record.score:
                     entry_score[str(score.year)] = score.score
                 content['entry score'] = entry_score
-            for attendace in Attendance.objects(code = school.code):
+            for attendace in Attendance.objects(code=school.code):
                 attend = OrderedDict()
                 for year in attendace.year:
                     attend[str(year.year)] = year.rate
                 content['attendance rate'] = attend
             output[school.name] = content
-            print(output)
         return jsonify(output), 200
 
     code = args.get("code")
     if code:
+        if flag == 0:
+            output = OrderedDict()
+            for school in Spec.objects(code = code):
+                if school.name in output:
+                    output[school.name]['class type'].append(school.class_type)
+                    continue
+                content = OrderedDict()
+                content['code'] = school.code
+                content['suburb'] = school.suburb
+                content['postcode'] = school.postcode
+                content['class type'] = [school.class_type]
+                for score_record in EntryScore.objects(name = school.name):
+                    entry_score = OrderedDict()
+                    for score in score_record.score:
+                        entry_score[str(score.year)] = score.score
+                    content['entry score'] = entry_score
+                for attendace in Attendance.objects(code = school.code):
+                    attend = OrderedDict()
+                    for year in attendace.year:
+                        attend[str(year.year)] = year.rate
+                    content['attendance rate'] = attend
+                output[school.name] = content
+            return jsonify(output), 200
+
         output = OrderedDict()
-        for school in Spec.objects(code = code):
-            if school.name in output:
-                output[school.name]['class type'].append(school.class_type)
-                continue
+        for school in Spec.objects(code = code, class_type=disable[int(class_type)]):
             content = OrderedDict()
             content['code'] = school.code
             content['suburb'] = school.suburb
             content['postcode'] = school.postcode
             content['class type'] = [school.class_type]
-            for score_record in EntryScore.objects(name = school.name):
+            for score_record in EntryScore.objects(name=school.name):
                 entry_score = OrderedDict()
                 for score in score_record.score:
                     entry_score[str(score.year)] = score.score
                 content['entry score'] = entry_score
-            for attendace in Attendance.objects(code = school.code):
+            for attendace in Attendance.objects(code=school.code):
                 attend = OrderedDict()
                 for year in attendace.year:
                     attend[str(year.year)] = year.rate
@@ -229,13 +295,36 @@ def search_specialist():
 
     name = args.get("name")
     if name:
+        if flag == 0:
+            name = name.lower()
+            output = OrderedDict()
+            for school in Spec.objects:
+                if name in school.name.lower():
+                    if school.name in output:
+                        output[school.name]['class type'].append(school.class_type)
+                        continue
+                    content = OrderedDict()
+                    content['code'] = school.code
+                    content['suburb'] = school.suburb
+                    content['postcode'] = school.postcode
+                    content['class type'] = [school.class_type]
+                    for score_record in EntryScore.objects(name=school.name):
+                        entry_score = OrderedDict()
+                        for score in score_record.score:
+                            entry_score[str(score.year)] = score.score
+                        content['entry score'] = entry_score
+                    for attendace in Attendance.objects(code=school.code):
+                        attend = OrderedDict()
+                        for year in attendace.year:
+                            attend[str(year.year)] = year.rate
+                        content['attendance rate'] = attend
+                    output[school.name] = content
+            return jsonify(output), 200
+
         name = name.lower()
         output = OrderedDict()
         for school in Spec.objects:
-            if name in school.name.lower():
-                if school.name in output:
-                    output[school.name]['class type'].append(school.class_type)
-                    continue
+            if name in school.name.lower() and school.class_type == disable[int(class_type)]:
                 content = OrderedDict()
                 content['code'] = school.code
                 content['suburb'] = school.suburb
