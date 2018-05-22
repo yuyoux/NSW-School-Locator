@@ -329,5 +329,40 @@ def search_gov():
         return 'False'
 
 
+##entry_score-related search
+@app.route('/entryscore', methods = ["GET"])
+def show_entry():
+    connect(host='mongodb://yuyoux:yongbao1110@ds231090.mlab.com:31090/9321a3')
+    parser = reqparse.RequestParser()
+    parser.add_argument('name', type=str)
+    parser.add_argument('score', type=int)
+    args = parser.parse_args()
+    name = args.get('name')
+    if name:
+        name = name.lower()
+        output = OrderedDict()
+        for s in EntryScore.objects:
+            content = OrderedDict()
+            if name in s.name.lower():
+                content['name'] = s.name
+                entry = OrderedDict()
+                for y in s.score:
+                    entry[str(y.year)] = y.score
+                content['entry score'] = entry
+                output[s.name] = content
+                return jsonify(output), 200
+            else:
+                return jsonify(name=False), 404
+    score = args.get('score')
+    if score:
+        output = []
+        for s in EntryScore.objects:
+            for y in s.score:
+                if y.year == 2018 and int(y.score) <= score:
+                    output.append(s.name)
+        return jsonify(output), 200
+
+
+
 if __name__ == "__main__":
     app.run()
