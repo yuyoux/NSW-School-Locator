@@ -254,8 +254,6 @@ def search_specialist():
         return jsonify(output), 200
 
        
-
-
 #### look up government school
 @app.route('/school/gov', methods=['GET'])
 def search_gov():
@@ -278,18 +276,16 @@ def search_gov():
             content['suburb'] = school.suburb
             content['postcode'] = school.postcode
             content['code'] = school.code
-            for a in Attendance.objects:
-                if a.code == school.code:
-                    attendance_rate = OrderedDict()
-                    for y in a.year:
-                        attendance_rate[str(y.year)] = y.rate
-                    content['attendence rate'] = attendance_rate
-            for s in EntryScore.objects:
-                if s.name == school.name:
-                    entry = OrderedDict()
-                    for y in s.score:
-                        entry[str(y.year)] = y.score
-                    content['entry score'] = entry
+            for a in Attendance.objects(code = school.code):
+                attendance_rate = OrderedDict()
+                for y in a.year:
+                    attendance_rate[str(y.year)] = y.rate
+                content['attendence rate'] = attendance_rate
+            for s in EntryScore.objects(name = school.name):
+                entry = OrderedDict()
+                for y in s.score:
+                    entry[str(y.year)] = y.score
+                content['entry score'] = entry
             output[school.name] = content
         return jsonify(output), 200
 
@@ -304,18 +300,16 @@ def search_gov():
             content['suburb'] = school.suburb
             content['postcode'] = school.postcode
             content['code'] = school.code
-            for a in Attendance.objects:
-                if a.code == school.code:
-                    attendance_rate = OrderedDict()
-                    for y in a.year:
-                        attendance_rate[str(y.year)] = y.rate
-                    content['attendence rate'] = attendance_rate
-            for s in EntryScore.objects:
-                if s.name == school.name:
-                    entry = OrderedDict()
-                    for y in s.score:
-                        entry[str(y.year)] = y.score
-                    content['entry score'] = entry
+            for a in Attendance.objects(code = school.code):
+                attendance_rate = OrderedDict()
+                for y in a.year:
+                    attendance_rate[str(y.year)] = y.rate
+                content['attendence rate'] = attendance_rate
+            for s in EntryScore.objects(name = school.name):
+                entry = OrderedDict()
+                for y in s.score:
+                    entry[str(y.year)] = y.score
+                content['entry score'] = entry
             output[school.name] = content
         return jsonify(output), 200
 
@@ -332,23 +326,21 @@ def search_gov():
                 content['suburb'] = school.suburb
                 content['postcode'] = school.postcode
                 content['code'] = school.code
+                for a in Attendance.objects(code=school.code):
+                    attendance_rate = OrderedDict()
+                    for y in a.year:
+                        attendance_rate[str(y.year)] = y.rate
+                    content['attendence rate'] = attendance_rate
+                for s in EntryScore.objects(name=school.name):
+                    entry = OrderedDict()
+                    for y in s.score:
+                        entry[str(y.year)] = y.score
+                    content['entry score'] = entry
                 output[school.name] = content
-                for a in Attendance.objects:
-                    if a.code == school.code:
-                        attendance_rate = OrderedDict()
-                        for y in a.year:
-                            attendance_rate[str(y.year)] = y.rate
-                        content['attendence rate'] = attendance_rate
-                for s in EntryScore.objects:
-                    if s.name == school.name:
-                        entry = OrderedDict()
-                        for y in s.score:
-                            entry[str(y.year)] = y.score
-                        content['entry score'] = entry
         return jsonify(output), 200
 
-    # if not name and not suburb and not postcode:
-    #     return jsonify(Input = False), 404
+    if not name and not suburb and not postcode:
+        return jsonify(Input = False), 404
 
 
 if __name__ == "__main__":
