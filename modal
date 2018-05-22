@@ -1,5 +1,17 @@
 from mongoengine import IntField, Document, EmbeddedDocument,ListField, EmbeddedDocumentField, StringField
+import googlemaps
 
+class GoogleMaps(object):
+    # google maps service
+    def __init__(self):
+ 
+        self._GOOGLE_MAPS_KEY = 'AIzaSyDAkguZ-aHXwBGG4E79WDbSHsocwLIyeOU'
+        self._Google_Geocod = googlemaps.Client(key=self._GOOGLE_MAPS_KEY)
+ 
+    def convert_to_geocode(self,address):
+        res = self._Google_Geocod.geocode(address) 
+        return res[0]["geometry"]["location"]
+        
 class Year(EmbeddedDocument):
     year = IntField(required=True)
     rate = StringField()
