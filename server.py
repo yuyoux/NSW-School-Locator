@@ -415,7 +415,7 @@ def search_gov():
             content['postcode'] = school.postcode
             content['code'] = school.code
             output[school.name] = content
-            address.append(school.street + ', ' + school.suburb)
+            address.append(school.street.replace('"','') + ', ' + school.suburb)
         return output, address
 
     if querytype=='Suburb':
@@ -429,7 +429,7 @@ def search_gov():
             content['postcode'] = school.postcode
             content['code'] = school.code
             output[school.name] = content
-            address.append(school.street + ', ' + school.suburb)
+            address.append(school.street.replace('"','') + ', ' + school.suburb)
         return output, address
 
     if querytype=='Partial School Name':
@@ -445,7 +445,7 @@ def search_gov():
                 content['postcode'] = school.postcode
                 content['code'] = school.code
                 output[school.name] = content
-                address.append(school.street + ', ' + school.suburb)
+                address.append(school.street.replace('"','') + ', ' + school.suburb)
         return output, address
 
     if not condition:
