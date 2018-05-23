@@ -409,7 +409,7 @@ def search_gov():
             content = OrderedDict()
             content['schooling'] = school.schooling
             content['school gender'] = school.school_gender
-            content['street'] = school.street
+            content['street'] = school.street.replace('"','')
             content['suburb'] = school.suburb
             content['postcode'] = school.postcode
             content['code'] = school.code
@@ -422,7 +422,7 @@ def search_gov():
             content = OrderedDict()
             content['schooling'] = school.schooling
             content['school gender'] = school.school_gender
-            content['street'] = school.street
+            content['street'] = school.street.replace('"','')
             content['suburb'] = school.suburb
             content['postcode'] = school.postcode
             content['code'] = school.code
@@ -437,7 +437,7 @@ def search_gov():
                 content = OrderedDict()
                 content['schooling'] = school.schooling
                 content['school gender'] = school.school_gender
-                content['street'] = school.street
+                content['street'] = school.street.replace('"','')
                 content['suburb'] = school.suburb
                 content['postcode'] = school.postcode
                 content['code'] = school.code
