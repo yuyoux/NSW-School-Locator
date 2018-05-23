@@ -117,6 +117,7 @@ def search_nongov():
     args = parser.parse_args()
     querytype = args.get("querytype")
     condition = args.get("condition")
+    address = list()
     if querytype=='Postcode':
         output = OrderedDict()
         for school in Nongov.objects(postcode = condition):
@@ -127,7 +128,8 @@ def search_nongov():
             content['suburb'] = school.suburb
             content['postcode'] = school.postcode
             output[school.name] = content
-        return output
+            address.append(school.street + ', ' + school.suburb)     
+        return output, address
     if querytype=='Suburb':
         output = OrderedDict()
         for school in Nongov.objects(suburb = condition):
@@ -138,7 +140,8 @@ def search_nongov():
             content['suburb'] = school.suburb
             content['postcode'] = school.postcode
             output[school.name] = content
-        return output
+            address.append(school.street + ', ' + school.suburb)
+        return output, address
 
     if querytype=='Partial School Name':
         name = condition.lower()
@@ -152,7 +155,8 @@ def search_nongov():
                 content['suburb'] = school.suburb
                 content['postcode'] = school.postcode
                 output[school.name] = content
-        return output
+                address.append(school.street + ', ' + school.suburb)
+        return output, address
         
 
  
@@ -171,6 +175,7 @@ def search_specialist():
     querytype = args.get("querytype")
     condition = args.get("condition")
     disabled = args.get("disabled")
+    address = list()
     if querytype=='Postcode':
         if disabled =='class type': ####### Did not select disable class
             output = OrderedDict()
@@ -182,6 +187,7 @@ def search_specialist():
                 content['code'] = school.code
                 for item in Gov.objects(code = school.code):
                     content['street'] = item.street
+                    address.append(item.street + ', ' + school.suburb)
                 content['suburb'] = school.suburb
                 content['postcode'] = school.postcode
                 content['class type'] = [school.class_type]
@@ -196,7 +202,7 @@ def search_specialist():
                         attend[str(year.year)] = year.rate
                     content['attendance rate'] = attend
                 output[school.name] = content
-            return jsonify(output), 200
+            return output, address
         ################################################################need modify disable dict
         output = OrderedDict()
         for school in Spec.objects(postcode=condition,class_type = disable[int(class_type)]):
@@ -204,6 +210,7 @@ def search_specialist():
             content['code'] = school.code
             for item in Gov.objects(code = school.code):
                     content['street'] = item.street
+                    address.append(item.street + ', ' + school.suburb)
             content['suburb'] = school.suburb
             content['postcode'] = school.postcode
             content['class type'] = [school.class_type]
@@ -218,7 +225,7 @@ def search_specialist():
                     attend[str(year.year)] = year.rate
                 content['attendance rate'] = attend
             output[school.name] = content
-        return jsonify(output), 200
+        return output,address
 
 
     if querytype=='Suburb':
@@ -232,6 +239,7 @@ def search_specialist():
                 content['code'] = school.code
                 for item in Gov.objects(code = school.code):
                     content['street'] = item.street
+                    address.append(item.street + ', ' + school.suburb)
                 content['suburb'] = school.suburb
                 content['postcode'] = school.postcode
                 content['class type'] = [school.class_type]
@@ -247,7 +255,7 @@ def search_specialist():
                     content['attendance rate'] = attend
                 output[school.name] = content
                 print(output)
-            return jsonify(output), 200
+            return output, address
 
         output = OrderedDict()
         for school in Spec.objects(suburb = condition, class_type=disable[int(class_type)]):
@@ -255,6 +263,7 @@ def search_specialist():
             content['code'] = school.code
             for item in Gov.objects(code = school.code):
                     content['street'] = item.street
+                    address.append(item.street + ', ' + school.suburb)
             content['suburb'] = school.suburb
             content['postcode'] = school.postcode
             content['class type'] = [school.class_type]
@@ -269,7 +278,7 @@ def search_specialist():
                     attend[str(year.year)] = year.rate
                 content['attendance rate'] = attend
             output[school.name] = content
-        return jsonify(output), 200
+        return output, address
 
     if querytype=='School Code':
         if disabled =='class type':
@@ -282,6 +291,7 @@ def search_specialist():
                 content['code'] = school.code
                 for item in Gov.objects(code = school.code):
                     content['street'] = item.street
+                    address.append(item.street + ', ' + school.suburb)
                 content['suburb'] = school.suburb
                 content['postcode'] = school.postcode
                 content['class type'] = [school.class_type]
@@ -296,7 +306,7 @@ def search_specialist():
                         attend[str(year.year)] = year.rate
                     content['attendance rate'] = attend
                 output[school.name] = content
-            return jsonify(output), 200
+            return output, address
 
         output = OrderedDict()
         for school in Spec.objects(code = condition, class_type=disable[int(class_type)]):
@@ -304,6 +314,7 @@ def search_specialist():
             content['code'] = school.code
             for item in Gov.objects(code = school.code):
                     content['street'] = item.street
+                    address.append(item.street + ', ' + school.suburb)
             content['suburb'] = school.suburb
             content['postcode'] = school.postcode
             content['class type'] = [school.class_type]
@@ -318,7 +329,7 @@ def search_specialist():
                     attend[str(year.year)] = year.rate
                 content['attendance rate'] = attend
             output[school.name] = content
-        return jsonify(output), 200
+        return output, address
 
     if querytype=='Partial School Name':
         if disabled =='class type':
@@ -333,6 +344,7 @@ def search_specialist():
                     content['code'] = school.code
                     for item in Gov.objects(code = school.code):
                         content['street'] = item.street
+                        address.append(item.street + ', ' + school.suburb)
                     content['suburb'] = school.suburb
                     content['postcode'] = school.postcode
                     content['class type'] = [school.class_type]
@@ -347,7 +359,7 @@ def search_specialist():
                             attend[str(year.year)] = year.rate
                         content['attendance rate'] = attend
                     output[school.name] = content
-            return jsonify(output), 200
+            return output, address
 
         name = condition.lower()
         output = OrderedDict()
@@ -357,6 +369,7 @@ def search_specialist():
                 content['code'] = school.code
                 for item in Gov.objects(code = school.code):
                     content['street'] = item.street
+                    address.append(item.street + ', ' + school.suburb)
                 content['suburb'] = school.suburb
                 content['postcode'] = school.postcode
                 content['class type'] = [school.class_type]
@@ -371,7 +384,7 @@ def search_specialist():
                         attend[str(year.year)] = year.rate
                     content['attendance rate'] = attend
                 output[school.name] = content
-        return jsonify(output), 200
+        return output, address
 
        
 
