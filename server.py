@@ -469,9 +469,9 @@ def show_entry():
                     entry[str(y.year)] = y.score
                 content['entry score'] = entry
                 output[s.name] = content
-                return jsonify(output), 200
+                return output
             else:
-                return jsonify(name=False), 404
+                return 'False'
     score = args.get('score')
     if score:
         output = []
@@ -479,7 +479,7 @@ def show_entry():
             for y in s.score:
                 if y.year == 2018 and int(y.score) <= score:
                     output.append(s.name)
-        return jsonify(output), 200
+        return output
 
 
 
