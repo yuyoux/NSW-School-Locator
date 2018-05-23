@@ -180,6 +180,8 @@ def search_specialist():
                     continue
                 content = OrderedDict()
                 content['code'] = school.code
+                for item in Gov.objects(code = school.code):
+                    content['street'] = item.street
                 content['suburb'] = school.suburb
                 content['postcode'] = school.postcode
                 content['class type'] = [school.class_type]
@@ -200,6 +202,8 @@ def search_specialist():
         for school in Spec.objects(postcode=condition,class_type = disable[int(class_type)]):
             content = OrderedDict()
             content['code'] = school.code
+            for item in Gov.objects(code = school.code):
+                    content['street'] = item.street
             content['suburb'] = school.suburb
             content['postcode'] = school.postcode
             content['class type'] = [school.class_type]
@@ -226,6 +230,8 @@ def search_specialist():
                     continue
                 content = OrderedDict()
                 content['code'] = school.code
+                for item in Gov.objects(code = school.code):
+                    content['street'] = item.street
                 content['suburb'] = school.suburb
                 content['postcode'] = school.postcode
                 content['class type'] = [school.class_type]
@@ -247,6 +253,8 @@ def search_specialist():
         for school in Spec.objects(suburb = condition, class_type=disable[int(class_type)]):
             content = OrderedDict()
             content['code'] = school.code
+            for item in Gov.objects(code = school.code):
+                    content['street'] = item.street
             content['suburb'] = school.suburb
             content['postcode'] = school.postcode
             content['class type'] = [school.class_type]
@@ -272,6 +280,8 @@ def search_specialist():
                     continue
                 content = OrderedDict()
                 content['code'] = school.code
+                for item in Gov.objects(code = school.code):
+                    content['street'] = item.street
                 content['suburb'] = school.suburb
                 content['postcode'] = school.postcode
                 content['class type'] = [school.class_type]
@@ -292,6 +302,8 @@ def search_specialist():
         for school in Spec.objects(code = condition, class_type=disable[int(class_type)]):
             content = OrderedDict()
             content['code'] = school.code
+            for item in Gov.objects(code = school.code):
+                    content['street'] = item.street
             content['suburb'] = school.suburb
             content['postcode'] = school.postcode
             content['class type'] = [school.class_type]
@@ -319,6 +331,8 @@ def search_specialist():
                         continue
                     content = OrderedDict()
                     content['code'] = school.code
+                    for item in Gov.objects(code = school.code):
+                        content['street'] = item.street
                     content['suburb'] = school.suburb
                     content['postcode'] = school.postcode
                     content['class type'] = [school.class_type]
@@ -341,6 +355,8 @@ def search_specialist():
             if name in school.name.lower() and school.class_type == disable[int(class_type)]:
                 content = OrderedDict()
                 content['code'] = school.code
+                for item in Gov.objects(code = school.code):
+                    content['street'] = item.street
                 content['suburb'] = school.suburb
                 content['postcode'] = school.postcode
                 content['class type'] = [school.class_type]
