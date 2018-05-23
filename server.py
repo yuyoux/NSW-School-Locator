@@ -403,6 +403,7 @@ def search_gov():
     querytype = args.get('querytype')
     condition = args.get('condition')
     condition=condition.strip()
+    address = []
     if querytype=='Postcode':
         output = OrderedDict()
         for school in Gov.objects(postcode=condition):
@@ -414,7 +415,8 @@ def search_gov():
             content['postcode'] = school.postcode
             content['code'] = school.code
             output[school.name] = content
-        return output
+            address.append(school.street + ', ' + school.suburb)
+        return output, address
 
     if querytype=='Suburb':
         output = OrderedDict()
@@ -427,7 +429,8 @@ def search_gov():
             content['postcode'] = school.postcode
             content['code'] = school.code
             output[school.name] = content
-        return output
+            address.append(school.street + ', ' + school.suburb)
+        return output, address
 
     if querytype=='Partial School Name':
         name = condition.lower()
@@ -442,7 +445,8 @@ def search_gov():
                 content['postcode'] = school.postcode
                 content['code'] = school.code
                 output[school.name] = content
-        return output
+                address.append(school.street + ', ' + school.suburb)
+        return output, address
 
     if not condition:
         return 'False'
