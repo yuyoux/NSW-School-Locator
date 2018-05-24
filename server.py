@@ -120,6 +120,7 @@ def root():
 @app.route("/school/all", methods=['GET'])
 def search_all():
     output = search_nongov
+    
     output +=search_specialist()
     output +=search_gov()
     return render_template("all.html",schools = output)
@@ -127,322 +128,62 @@ def search_all():
 
 @app.route("/school/nongov", methods=['GET'])
 def print_nongov():
-    output = search_nongov()
-    return render_template("non_gov.html",schools=output)
+    output,locations = search_nongov()
+    name_list = list(output.keys())
+    locations_list = google_maps.form_geocode_list(name_list,locations) 
+    return render_template("non_gov.html",schools=output,locations=locations_list)
 
 def search_nongov():
     parser = reqparse.RequestParser()
-    parser.add_argument('querytype')
     parser.add_argument('condition')
     args = parser.parse_args()
-    querytype = args.get("querytype")
     condition = args.get("condition")
     address = list()
-    if querytype=='Postcode':
+    if condition.isdigit():
         output = OrderedDict()
         for school in Nongov.objects(postcode = condition):
             content = OrderedDict()
-            content['schooling'] = school.schooling
             content['school gender'] = school.school_gender
             content['street'] = school.street
-            content['suburb'] = school.suburb
-            content['postcode'] = school.postcode
             output[school.name] = content
             address.append(school.street + ', ' + school.suburb)     
         return output, address
-    if querytype=='Suburb':
+    
+    else:
         output = OrderedDict()
         for school in Nongov.objects(suburb = condition):
             content = OrderedDict()
-            content['schooling'] = school.schooling
             content['school gender'] = school.school_gender
             content['street'] = school.street
-            content['suburb'] = school.suburb
-            content['postcode'] = school.postcode
             output[school.name] = content
             address.append(school.street + ', ' + school.suburb)
         return output, address
 
-    if querytype=='Partial School Name':
-        name = condition.lower()
-        output = OrderedDict()
-        for school in Nongov.objects:
-            if name in school.name.lower():
-                content = OrderedDict()
-                content['schooling'] = school.schooling
-                content['school gender'] = school.school_gender
-                content['street'] = school.street
-                content['suburb'] = school.suburb
-                content['postcode'] = school.postcode
-                output[school.name] = content
-                address.append(school.street + ', ' + school.suburb)
-        return output, address
-        
-
  
-#### look up school with special support 
-@app.route("/school/specialist", methods=['GET'])
-def print_special():
-    output =search_specialist()
-    return render_template("special.html",schools=output)
-     
-def search_specialist():
-    parser = reqparse.RequestParser()
-    parser.add_argument('querytype')
-    parser.add_argument('condition')
-    parser.add_argument('disabled')
-    args = parser.parse_args()
-    querytype = args.get("querytype")
-    condition = args.get("condition")
-    disabled = args.get("disabled")
-    address = list()
-    if querytype == 'Postcode':
-        if disabled == 'class type':  ####### Did not select disable class
-            output = OrderedDict()
-            for school in Spec.objects(postcode=condition):
-                if school.name in output:
-                    output[school.name]['class type'].append(school.class_type)
-                    continue
-                content = OrderedDict()
-                content['code'] = school.code
-                for item in Gov.objects(code=school.code):
-                    content['street'] = item.street
-                    address.append(item.street + ', ' + school.suburb)
-                content['suburb'] = school.suburb
-                content['postcode'] = school.postcode
-                content['class type'] = [school.class_type]
-                for score_record in EntryScore.objects(name=school.name):
-                    entry_score = OrderedDict()
-                    for score in score_record.score:
-                        entry_score[str(score.year)] = score.score
-                    content['entry score'] = entry_score
-                for attendace in Attendance.objects(code=school.code):
-                    attend = OrderedDict()
-                    for year in attendace.year:
-                        attend[str(year.year)] = year.rate
-                    content['attendance rate'] = attend
-                output[school.name] = content
-            return output, address
-        ################################################################need modify disable dict
-        output = OrderedDict()
-        key = raw_input[disabled]
-        for values in disable[key]:
-            for school in Spec.objects(postcode=condition, class_type=values):
-                content = OrderedDict()
-                content['code'] = school.code
-                for item in Gov.objects(code=school.code):
-                    content['street'] = item.street
-                    address.append(item.street + ', ' + school.suburb)
-                content['suburb'] = school.suburb
-                content['postcode'] = school.postcode
-                content['class type'] = [school.class_type]
-                for score_record in EntryScore.objects(name=school.name):
-                    entry_score = OrderedDict()
-                    for score in score_record.score:
-                        entry_score[str(score.year)] = score.score
-                    content['entry score'] = entry_score
-                for attendace in Attendance.objects(code=school.code):
-                    attend = OrderedDict()
-                    for year in attendace.year:
-                        attend[str(year.year)] = year.rate
-                    content['attendance rate'] = attend
-                output[school.name] = content
-            return output, address
-
-    if querytype == 'Suburb':
-        if disabled == 'class type':
-            output = OrderedDict()
-            for school in Spec.objects(suburb=condition):
-                if school.name in output:
-                    output[school.name]['class type'].append(school.class_type)
-                    continue
-                content = OrderedDict()
-                content['code'] = school.code
-                for item in Gov.objects(code=school.code):
-                    content['street'] = item.street
-                    address.append(item.street + ', ' + school.suburb)
-                content['suburb'] = school.suburb
-                content['postcode'] = school.postcode
-                content['class type'] = [school.class_type]
-                for score_record in EntryScore.objects(name=school.name):
-                    entry_score = OrderedDict()
-                    for score in score_record.score:
-                        entry_score[str(score.year)] = score.score
-                    content['entry score'] = entry_score
-                for attendace in Attendance.objects(code=school.code):
-                    attend = OrderedDict()
-                    for year in attendace.year:
-                        attend[str(year.year)] = year.rate
-                    content['attendance rate'] = attend
-                output[school.name] = content
-                print(output)
-            return output, address
-
-        output = OrderedDict()
-        key = raw_input[disabled]
-        for values in disable[key]:
-            for school in Spec.objects(suburb=condition, class_type=values):
-                content = OrderedDict()
-                content['code'] = school.code
-                for item in Gov.objects(code=school.code):
-                    content['street'] = item.street
-                    address.append(item.street + ', ' + school.suburb)
-                content['suburb'] = school.suburb
-                content['postcode'] = school.postcode
-                content['class type'] = [school.class_type]
-                for score_record in EntryScore.objects(name=school.name):
-                    entry_score = OrderedDict()
-                    for score in score_record.score:
-                        entry_score[str(score.year)] = score.score
-                    content['entry score'] = entry_score
-                for attendace in Attendance.objects(code=school.code):
-                    attend = OrderedDict()
-                    for year in attendace.year:
-                        attend[str(year.year)] = year.rate
-                    content['attendance rate'] = attend
-                output[school.name] = content
-            return output, address
-
-    if querytype == 'School Code':
-        if disabled == 'class type':
-            output = OrderedDict()
-            for school in Spec.objects(code=condition):
-                if school.name in output:
-                    output[school.name]['class type'].append(school.class_type)
-                    continue
-                content = OrderedDict()
-                content['code'] = school.code
-                for item in Gov.objects(code=school.code):
-                    content['street'] = item.street
-                    address.append(item.street + ', ' + school.suburb)
-                content['suburb'] = school.suburb
-                content['postcode'] = school.postcode
-                content['class type'] = [school.class_type]
-                for score_record in EntryScore.objects(name=school.name):
-                    entry_score = OrderedDict()
-                    for score in score_record.score:
-                        entry_score[str(score.year)] = score.score
-                    content['entry score'] = entry_score
-                for attendace in Attendance.objects(code=school.code):
-                    attend = OrderedDict()
-                    for year in attendace.year:
-                        attend[str(year.year)] = year.rate
-                    content['attendance rate'] = attend
-                output[school.name] = content
-            return output, address
-
-        output = OrderedDict()
-        key = raw_input[disabled]
-        for values in disable[key]:
-            for school in Spec.objects(code=condition, class_type=values):
-                content = OrderedDict()
-                content['code'] = school.code
-                for item in Gov.objects(code=school.code):
-                    content['street'] = item.street
-                    address.append(item.street + ', ' + school.suburb)
-                content['suburb'] = school.suburb
-                content['postcode'] = school.postcode
-                content['class type'] = [school.class_type]
-                for score_record in EntryScore.objects(name=school.name):
-                    entry_score = OrderedDict()
-                    for score in score_record.score:
-                        entry_score[str(score.year)] = score.score
-                    content['entry score'] = entry_score
-                for attendace in Attendance.objects(code=school.code):
-                    attend = OrderedDict()
-                    for year in attendace.year:
-                        attend[str(year.year)] = year.rate
-                    content['attendance rate'] = attend
-                output[school.name] = content
-            return output, address
-
-    if querytype == 'Partial School Name':
-        if disabled == 'class type':
-            name = condition.lower()
-            output = OrderedDict()
-            for school in Spec.objects:
-                if name in school.name.lower():
-                    if school.name in output:
-                        output[school.name]['class type'].append(school.class_type)
-                        continue
-                    content = OrderedDict()
-                    content['code'] = school.code
-                    for item in Gov.objects(code=school.code):
-                        content['street'] = item.street
-                        address.append(item.street + ', ' + school.suburb)
-                    content['suburb'] = school.suburb
-                    content['postcode'] = school.postcode
-                    content['class type'] = [school.class_type]
-                    for score_record in EntryScore.objects(name=school.name):
-                        entry_score = OrderedDict()
-                        for score in score_record.score:
-                            entry_score[str(score.year)] = score.score
-                        content['entry score'] = entry_score
-                    for attendace in Attendance.objects(code=school.code):
-                        attend = OrderedDict()
-                        for year in attendace.year:
-                            attend[str(year.year)] = year.rate
-                        content['attendance rate'] = attend
-                    output[school.name] = content
-            return output, address
-
-        name = condition.lower()
-        output = OrderedDict()
-        key = raw_input[disabled]
-        for values in disable[key]:
-            for school in Spec.objects:
-                if name in school.name.lower() and school.class_type == values:
-                    content = OrderedDict()
-                    content['code'] = school.code
-                    for item in Gov.objects(code=school.code):
-                        content['street'] = item.street
-                        address.append(item.street + ', ' + school.suburb)
-                    content['suburb'] = school.suburb
-                    content['postcode'] = school.postcode
-                    content['class type'] = [school.class_type]
-                    for score_record in EntryScore.objects(name=school.name):
-                        entry_score = OrderedDict()
-                        for score in score_record.score:
-                            entry_score[str(score.year)] = score.score
-                        content['entry score'] = entry_score
-                    for attendace in Attendance.objects(code=school.code):
-                        attend = OrderedDict()
-                        for year in attendace.year:
-                            attend[str(year.year)] = year.rate
-                        content['attendance rate'] = attend
-                    output[school.name] = content
-            return output, address
-
-
+       
 #### look up government school
 @app.route('/school/gov', methods=['GET'])
 def print_gov():
-    output = search_gov()
-    return render_template("gov.html", schools=output)
-
+    output,locations = search_gov()
+    name_list = list(output.keys())
+    locations_list = google_maps.form_geocode_list(name_list,locations) 
+    return render_template("gov.html",schools=output,locations=locations_list)
 
 def search_gov():
     parser = reqparse.RequestParser()
-    parser.add_argument('querytype')
     parser.add_argument('condition')
     args = parser.parse_args()
-    querytype = args.get('querytype')
     condition = args.get('condition')
     condition = condition.strip()
     address = []
     disable_support = False
     
-    if querytype == 'Postcode':
+    if condition.isdigit():
         output = OrderedDict()
         for school in Gov.objects(postcode=condition):
             content = OrderedDict()
-            content['schooling'] = school.schooling
             content['school gender'] = school.school_gender
             content['street'] = school.street.replace('"', '')
-            content['suburb'] = school.suburb
-            content['postcode'] = school.postcode
-            content['code'] = school.code
-
             attendance_rate = [['Year', 'Attendance Rate']]
             for a in Attendance.objects(code=school.code):
                 for y in a.year:
@@ -472,12 +213,8 @@ def search_gov():
         output = OrderedDict()
         for school in Gov.objects(suburb=condition):
             content = OrderedDict()
-            content['schooling'] = school.schooling
             content['school gender'] = school.school_gender
             content['street'] = school.street.replace('"', '')
-            content['suburb'] = school.suburb
-            content['postcode'] = school.postcode
-            content['code'] = school.code
 
             attendance_rate = [['Year', 'Attendance Rate']]
             for a in Attendance.objects(code=school.code):
@@ -511,12 +248,8 @@ def search_gov():
         for school in Gov.objects:
             if name in school.name.lower():
                 content = OrderedDict()
-                content['schooling'] = school.schooling
                 content['school gender'] = school.school_gender
                 content['street'] = school.street.replace('"', '')
-                content['suburb'] = school.suburb
-                content['postcode'] = school.postcode
-                content['code'] = school.code
 
                 attendance_rate = [['Year', 'Attendance Rate']]
                 for a in Attendance.objects(code=school.code):
@@ -546,41 +279,6 @@ def search_gov():
 
     if not condition:
         return 'False'
-
-
-##entry_score-related search
-@app.route('/entryscore', methods = ["GET"])
-def show_entry():
-    connect(host='mongodb://yuyoux:yongbao1110@ds231090.mlab.com:31090/9321a3')
-    parser = reqparse.RequestParser()
-    parser.add_argument('name', type=str)
-    parser.add_argument('score', type=int)
-    args = parser.parse_args()
-    name = args.get('name')
-    if name:
-        name = name.lower()
-        output = OrderedDict()
-        for s in EntryScore.objects:
-            content = OrderedDict()
-            if name in s.name.lower():
-                content['name'] = s.name
-                entry = OrderedDict()
-                for y in s.score:
-                    entry[str(y.year)] = y.score
-                content['entry score'] = entry
-                output[s.name] = content
-                return output
-            else:
-                return 'False'
-    score = args.get('score')
-    if score:
-        output = []
-        for s in EntryScore.objects:
-            for y in s.score:
-                if y.year == 2018 and int(y.score) <= score:
-                    output.append(s.name)
-        return output
-
 
 
 if __name__ == "__main__":
