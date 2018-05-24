@@ -413,8 +413,6 @@ def search_specialist():
                     output[school.name] = content
             return output, address
 
-       
-
 
 #### look up government school
 @app.route('/school/gov', methods=['GET'])
@@ -441,6 +439,24 @@ def search_gov():
             content['suburb'] = school.suburb
             content['postcode'] = school.postcode
             content['code'] = school.code
+
+            attendance_rate = [['Year', 'Attendance Rate']]
+            for a in Attendance.objects(code=school.code):
+                for y in a.year:
+                    attendance_list = []
+                    attendance_list.append(str(y.year))
+                    attendance_list.append(y.rate)
+                    attendance_rate.append(attendance_list)
+                content['attendence rate'] = attendance_rate
+            entry_rate = [['Year', 'Entry Score']]
+            for s in EntryScore.objects(name=school.name):
+                for y in s.score:
+                    entry_list = []
+                    entry_list.append(str(y.year))
+                    entry_list.append(y.score)
+                    entry_rate.append(entry_list)
+                content['entry score'] = entry_rate
+
             output[school.name] = content
             address.append(school.street.replace('"','') + ', ' + school.suburb)
         return output, address
@@ -455,6 +471,25 @@ def search_gov():
             content['suburb'] = school.suburb
             content['postcode'] = school.postcode
             content['code'] = school.code
+            
+            attendance_rate = [['Year', 'Attendance Rate']]
+            for a in Attendance.objects(code=school.code):
+                for y in a.year:
+                    attendance_list = []
+                    attendance_list.append(str(y.year))
+                    attendance_list.append(y.rate)
+                    attendance_rate.append(attendance_list)
+                content['attendence rate'] = attendance_rate
+
+            entry_rate = [['Year', 'Entry Score']]
+            for s in EntryScore.objects(name=school.name):
+                for y in s.score:
+                    entry_list = []
+                    entry_list.append(str(y.year))
+                    entry_list.append(y.score)
+                    entry_rate.append(entry_list)
+                content['entry score'] = entry_rate
+                
             output[school.name] = content
             address.append(school.street.replace('"','') + ', ' + school.suburb)
         return output, address
@@ -471,6 +506,25 @@ def search_gov():
                 content['suburb'] = school.suburb
                 content['postcode'] = school.postcode
                 content['code'] = school.code
+                
+                attendance_rate = [['Year', 'Attendance Rate']]
+                for a in Attendance.objects(code=school.code):
+                    for y in a.year:
+                        attendance_list = []
+                        attendance_list.append(str(y.year))
+                        attendance_list.append(y.rate)
+                        attendance_rate.append(attendance_list)
+                    content['attendence rate'] = attendance_rate
+
+                entry_rate = [['Year', 'Entry Score']]
+                for s in EntryScore.objects(name=school.name):
+                    for y in s.score:
+                        entry_list = []
+                        entry_list.append(str(y.year))
+                        entry_list.append(y.score)
+                        entry_rate.append(entry_list)
+                    content['entry score'] = entry_rate
+                    
                 output[school.name] = content
                 address.append(school.street.replace('"','') + ', ' + school.suburb)
         return output, address
