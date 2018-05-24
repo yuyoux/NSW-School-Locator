@@ -1,42 +1,114 @@
 {% extends 'client.html' %} 
-{% block content %}
+{% block public %}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+	google.charts.load('current', {
+	'packages':['map'],
+	'mapsApiKey': 'AIzaSyDAkguZ-aHXwBGG4E79WDbSHsocwLIyeOU'
+	});
+	google.charts.setOnLoadCallback(drawChart);
+	function drawChart() {
+		var location_list= {{locations|tojson}}
+		var data = google.visualization.arrayToDataTable( location_list);
+		var options = {
+		zoomLevel: 9,
+		showTooltip: true,
+		showInfoWindow: true
+		};
+		var map = new google.visualization.Map(document.getElementById('map_markers_div_gov'));
+		map.draw(data, options);
+	}
+</script>
+
+
 	<div class="container">
-		<div class="header"><h3> Government School</h3></div>
-		<table class="table table-hover">
-			<tr>
-				<th> School Name</th>
-				<th> School code </th>
-				<th>schooling</th>
-				<th>school gender</th>
-				<th>street</th>
-				<th>suburb</th>
-				<th>postcode</th>
-				<th>attendence rate</th>
-				<th>entry score</th>
-			</tr>
-			{% if schools %}
-				{% for school in schools %}
+		<div class="col-md-6">
+			<table class="table table-hover">
 				<tr>
-					<td>{{ school }}</td>
-					<td>{{ schools[school]['code'] }}</td>
-					<td>{{ schools[school]['schooling'] }}</td>
-					<td>{{ schools[school]['school gender'] }}</td>
-					<td>{{ schools[school]['street'] }}</td>
-					<td>{{ schools[school]['suburb'] }}</td>
-					<td>{{ schools[school]['postcode'] }}</td>
-					{% if schools[school]['attendence rate'] %}
-					<td><a href="attenedce.html">see more details</td>
-					{% else %}
-					<td>&nbsp;</td>
-					{% endif %}
-					{% if schools[school]['entry score'] %}
-					<td><a href="attenedce.html">see more details</td>
-					{% else %}
-					<td>&nbsp;</td>
-					{% endif %}
+					<th>school name</th>
+					<th>school gender</th>
+					<th>street</th>
+					<th>AR</th>
+					<th>ES</th>
 				</tr>
-				{% endfor %}
-			{% endif %}
-		</table>
+				{% if schools %}
+					{% for school in schools %}
+					<tr>
+						<td>{{ school }}
+						{% if schools[school]['disable_support'] %}
+							<span class="glyphicon glyphicon-heart" ></span>
+						{% endif %}
+						</td>
+						<td>{{ schools[school]['school gender'] }}</td>
+						<td>{{ schools[school]['street'] }}</td>
+						<td>
+						{% if schools[school]['attendence rate'] %}
+						
+						<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+						<script type="text/javascript">
+							function startgraph(){
+								alert({{schools[school]['attendence rate']}})
+								google.charts.load('current', {'packages':['corechart']});
+								google.charts.setOnLoadCallback(drawChart);
+
+						   function drawChart() {
+							var attence_list={{schools[school]['attence rate']}}
+							console.log('fun')
+							var data = google.visualization.arrayToDataTable(attence_list);
+							var options = {
+							  title: 'Attendence Rate',
+							  curveType: 'function',
+							  legend: { position: 'bottom' }
+							};
+							var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+							chart.draw(data, options);
+						  }
+						</script>
+						<div id="curve_chart" style="width: 500px; height: 500px">
+						<button class="btn btn-sm " data-toggle="modal" data-target="#myModal " >
+							<span class="glyphicon glyphicon-stats" onclick="startgraph()"></span>
+						</button>
+						<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+											&times;
+										</button>
+										<h4 class="modal-title" id="myModalLabel">
+											Attendence Rate 
+										</h4>
+									</div>
+									<div class="modal-body">
+										
+										
+										
+										
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close
+										</button>
+									</div>
+								</div><!-- /.modal-content -->
+							</div><!-- /.modal -->
+						</div>
+						{% endif %}
+						</td>
+						<td>
+						{% if schools[school]['entry score'] %}
+						<button type="button" class="btn btn-xs" onclick="setaction()">
+							<span class="glyphicon glyphicon-stats" ></span>
+						</button>
+						{% endif %}
+						</td>
+					</tr>
+					{% endfor %}
+				{% endif %}
+			</table>
+		</div>
+
+		<div class="col-md-4" id="map_markers_div_gov" style="width: 400px; height: 400px"></div>
 	</div>
-{% endblock %}
+
+{% endblock public%}
