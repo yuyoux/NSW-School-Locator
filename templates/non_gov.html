@@ -1,28 +1,54 @@
 {% extends 'client.html' %} 
-{% block content %}
+{% block private %}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+	google.charts.load('current', {
+	'packages':['map'],
+	'mapsApiKey': 'AIzaSyDAkguZ-aHXwBGG4E79WDbSHsocwLIyeOU'
+	});
+	google.charts.setOnLoadCallback(drawChart);
+	function drawChart() {
+		var location_list= {{locations|tojson}}
+		var data = google.visualization.arrayToDataTable( location_list);
+		var options = {
+		showTooltip: true,
+		showInfoWindow: true
+		};
+		var map = new google.visualization.Map(document.getElementById('map_markers_div'));
+		map.draw(data, options);
+	}
+	
+</script>
+
 	<div class="container">
-		<div class="header"><h3> Non-government School</h3></div>
-		<table class="table table-hover">
-			<tr>
-				<th> School Name</th>
-				<th>schooling</th>
-				<th>school gender</th>
-				<th>street</th>
-				<th>suburb</th>
-				<th>postcode</th>
-			</tr>
-			{% if schools %}
-				{% for school in schools %}
+		<div class="col-md-5">
+			<table class="table table-hover">
 				<tr>
-					<td>{{ school }}</td>
-					<td>{{ schools[school]['schooling'] }}</td>
-					<td>{{ schools[school]['school gender'] }}</td>
-					<td>{{ schools[school]['street'] }}</td>
-					<td>{{ schools[school]['suburb'] }}</td>
-					<td>{{ schools[school]['postcode'] }}</td>
+					<th>school name</th>
+					<th>school gender</th>
+					<th>street</th>
 				</tr>
-				{% endfor %}
-			{% endif %}
-		</table>
+				{% if schools %}
+					{% for school in schools %}
+					<tr>
+						<td>{{ school }}
+						{% if schools[school]['attendence rate'] or schools[school]['entry score'] %}
+						<button type="button" class="btn btn-xs" onclick="setaction()">
+							<span class="glyphicon glyphicon-stats" ></span>
+						</button>
+						{% endif %}
+						</td>
+						<td>{{ schools[school]['school gender'] }}</td>
+						<td>{{ schools[school]['street'] }}</td>
+					</tr>
+					{% endfor %}
+				{% endif %}
+			</table>
+		</div>
+		<div class="col-md-3" >
+		{% block chart %}{% endblock %}
+		</div>
+		<div class="col-md-4" id="map_markers_div" style="width: 400px; height: 400px"></div>
 	</div>
-{% endblock %}
+
+{% endblock private%}
