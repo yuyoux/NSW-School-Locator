@@ -209,7 +209,7 @@ def search_gov():
             address.append(school.street.replace('"', '') + ', ' + school.suburb)
         return output, address
 
-    if querytype == 'Suburb':
+    else:
         output = OrderedDict()
         for school in Gov.objects(suburb=condition):
             content = OrderedDict()
@@ -242,40 +242,7 @@ def search_gov():
             address.append(school.street.replace('"', '') + ', ' + school.suburb)
         return output, address
 
-    if querytype == 'Partial School Name':
-        name = condition.lower()
-        output = OrderedDict()
-        for school in Gov.objects:
-            if name in school.name.lower():
-                content = OrderedDict()
-                content['school gender'] = school.school_gender
-                content['street'] = school.street.replace('"', '')
-
-                attendance_rate = [['Year', 'Attendance Rate']]
-                for a in Attendance.objects(code=school.code):
-                    for y in a.year:
-                        attendance_list = []
-                        attendance_list.append(str(y.year))
-                        attendance_list.append(y.rate)
-                        attendance_rate.append(attendance_list)
-                    content['attendence rate'] = attendance_rate
-
-                entry_rate = [['Year', 'Entry Score']]
-                for s in EntryScore.objects(name=school.name):
-                    for y in s.score:
-                        entry_list = []
-                        entry_list.append(str(y.year))
-                        entry_list.append(y.score)
-                        entry_rate.append(entry_list)
-                    content['entry score'] = entry_rate
-
-                for s in Spec.objects(name=school.name):
-                    disable_support = True
-                    content['disable_support'] = disable_support
-
-                output[school.name] = content
-                address.append(school.street.replace('"', '') + ', ' + school.suburb)
-        return output, address
+    
 
     if not condition:
         return 'False'
