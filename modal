@@ -1,6 +1,7 @@
 from mongoengine import IntField, Document, EmbeddedDocument,ListField, EmbeddedDocumentField, StringField
 import googlemaps
 
+
 class GoogleMaps(object):
     # google maps service
     def __init__(self):
@@ -11,6 +12,24 @@ class GoogleMaps(object):
     def convert_to_geocode(self,address):
         res = self._Google_Geocod.geocode(address) 
         return res[0]["geometry"]["location"]
+
+    def form_geocode_list(self,ls1,ls2):
+        res=[['Lat', 'Long', 'Name']]
+        for i in range(len(ls1)):
+            name = ls1[i]
+            geo = self.convert_to_geocode(ls2[i])
+            lat=geo['lat']
+            lng=geo['lng']
+            res.append([lat,lng,name])
+        return res
+        
+    def form_geocodes(self,ls):
+        res=[]
+        for ele in ls:
+            geo = self.convert_to_geocode(ele)
+            res.append(geo)
+        return res   
+   
         
 class Year(EmbeddedDocument):
     year = IntField(required=True)
