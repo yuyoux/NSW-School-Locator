@@ -119,11 +119,13 @@ def root():
 
 @app.route("/school/all", methods=['GET'])
 def search_all():
-    output = search_nongov
-    
-    output +=search_specialist()
-    output +=search_gov()
-    return render_template("all.html",schools = output)
+    output,locations = search_gov()
+    output2,locations2 =search_nongov()
+    name_list = list(output.keys())
+    locations_list = google_maps.form_geocode_list(name_list,locations) 
+    name_list = list(output2.keys())
+    locations_list2 = google_maps.form_geocode_list(name_list,locations2) 
+    return render_template("all.html",schools = output,locations=locations_list,schools2=output2,locations2=locations_list2)
 
 
 @app.route("/school/nongov", methods=['GET'])
@@ -146,7 +148,7 @@ def search_nongov():
             content['school gender'] = school.school_gender
             content['street'] = school.street
             output[school.name] = content
-            address.append(school.street + ', ' + school.suburb)     
+            address.append(school.street + ', ' + school.suburb+'nsw')     
         return output, address
     
     else:
@@ -156,7 +158,7 @@ def search_nongov():
             content['school gender'] = school.school_gender
             content['street'] = school.street
             output[school.name] = content
-            address.append(school.street + ', ' + school.suburb)
+            address.append(school.street + ', ' + school.suburb+'nsw')
         return output, address
 
  
@@ -176,14 +178,19 @@ def search_gov():
     condition = args.get('condition')
     condition = condition.strip()
     address = []
-    disable_support = False
-    
+    count=0
+    count2=1000
+    disable_support = False   
     if condition.isdigit():
         output = OrderedDict()
         for school in Gov.objects(postcode=condition):
+            count+=1
+            count2 +=1
             content = OrderedDict()
             content['school gender'] = school.school_gender
             content['street'] = school.street.replace('"', '')
+            content['count']=count
+            content['count2'] = count2
             attendance_rate = [['Year', 'Attendance Rate']]
             for a in Attendance.objects(code=school.code):
                 for y in a.year:
@@ -200,22 +207,23 @@ def search_gov():
                     entry_list.append(float(y.score))
                     entry_rate.append(entry_list)
                 content['entry score'] = entry_rate
-            
             for s in Spec.objects(name = school.name):
                 disable_support = True
                 content['disable_support'] = disable_support
-
             output[school.name] = content
-            address.append(school.street.replace('"', '') + ', ' + school.suburb)
+            address.append(school.street.replace('"', '') + ', ' + school.suburb+'NSW')
         return output, address
 
     else:
         output = OrderedDict()
         for school in Gov.objects(suburb=condition):
+            count+=1
+            count2 +=1
             content = OrderedDict()
             content['school gender'] = school.school_gender
             content['street'] = school.street.replace('"', '')
-
+            content['count']=count
+            content['count2'] = count2
             attendance_rate = [['Year', 'Attendance Rate']]
             for a in Attendance.objects(code=school.code):
                 for y in a.year:
@@ -224,7 +232,6 @@ def search_gov():
                     attendance_list.append(float(y.rate))
                     attendance_rate.append(attendance_list)
                 content['attendence rate'] = attendance_rate
-
             entry_rate = [['Year', 'Entry Score']]
             for s in EntryScore.objects(name=school.name):
                 for y in s.score:
@@ -232,18 +239,16 @@ def search_gov():
                     entry_list.append(int(y.year))
                     entry_list.append(float(y.score))
                     entry_rate.append(entry_list)
-                content['entry score'] = entry_rate
-                
+                content['entry score'] = entry_rate                
             for s in Spec.objects(name = school.name):
                 disable_support = True
                 content['disable_support'] = disable_support
-
             output[school.name] = content
-            address.append(school.street.replace('"', '') + ', ' + school.suburb)
+            address.append(school.street.replace('"', '') + ', ' + school.suburb+'NSW')
         return output, address
-
     if not condition:
         return 'False'
+
 
 
 if __name__ == "__main__":
