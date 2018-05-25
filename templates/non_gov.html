@@ -45,10 +45,13 @@
 				{% endif %}
 			</table>
 		</div>
-		<div class="col-md-3" >
+		<div class="col-md-3 pull-right" >
 		{% block chart %}{% endblock %}
 		</div>
 		<div class="col-md-4" id="map_markers_div" style="width: 400px; height: 400px"></div>
 	</div>
 
 {% endblock private%}
+{% block public %}
+	<h3>No data </h3>
+{%endblock%}
