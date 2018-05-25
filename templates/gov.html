@@ -1,4 +1,8 @@
 {% extends 'client.html' %} 
+{% block private %}
+	<h3>No data </h3>
+{%endblock%}
+
 {% block public %}
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
@@ -43,10 +47,10 @@
 						<td>{{ schools[school]['street'] }}</td>
 						<td>
 						{% if schools[school]['attendence rate'] %}
-						<button class="btn btn-sm " data-toggle="modal" data-target="#myModal " >
+						<button class="btn btn-sm " data-toggle="modal" data-target="#{{schools[school]['count']}}" >
 							<span class="glyphicon glyphicon-stats" ></span>
 						</button>
-						<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal fade" id="{{schools[school]['count']}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 							<div class="modal-dialog">
 								<div class="modal-content">
 									<div class="modal-header">
@@ -54,23 +58,25 @@
 											&times;
 										</button>
 										<h4 class="modal-title" id="myModalLabel">
-											{{school}} Attendence Rate 
+											{{school}} 
 										</h4>
 									</div>
 									<div class="modal-body">
-										<div id="curve_chart+{{school}}" style="width: 500px; height: 500px"></div>
+										<div id="curve_chart+{{school}}" style="width: 700px; height:400px"></div>
 										<script type="text/javascript">
 											google.charts.load('current', {'packages':['corechart']});
 											google.charts.setOnLoadCallback(drawChart);
 											
 											function drawChart() {
 												var attence_list={{schools[school]['attendence rate']|tojson}}
-												alert(attence_list)
 												var data = google.visualization.arrayToDataTable(attence_list);
 												var options = {
 												  title: 'Attendence Rate',
 												  curveType: 'function',
-												  legend: { position: 'bottom' }
+												  legend: { position: 'bottom' },
+												  height:400,
+												  width:580
+
 												};
 												var chart = new google.visualization.LineChart(document.getElementById('curve_chart+{{school}}'));
 												chart.draw(data, options);
@@ -84,13 +90,57 @@
 								</div>
 							</div>
 						</div>
+						{%else%}
+						   -
 						{% endif %}
 						</td>
 						<td>
 						{% if schools[school]['entry score'] %}
-						<button type="button" class="btn btn-xs" onclick="setaction()">
+						<button class="btn btn-sm " data-toggle="modal" data-target="#{{schools[school]['count2']}}" >
 							<span class="glyphicon glyphicon-stats" ></span>
 						</button>
+						<div class="modal fade" id="{{schools[school]['count2']}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+											&times;
+										</button>
+										<h4 class="modal-title" id="myModalLabel">
+											{{school}} 
+										</h4>
+									</div>
+									<div class="modal-body">
+										<div id="curve_chart_entry+{{school}}" style="width: 700px; height:400px"></div>
+										<script type="text/javascript">
+											google.charts.load('current', {'packages':['corechart']});
+											google.charts.setOnLoadCallback(drawentry);
+											
+											function drawentry() {
+												var entry={{schools[school]['entry score']|tojson}}
+												var data = google.visualization.arrayToDataTable(entry);
+												var options = {
+												  title: 'entry score',
+												  curveType: 'function',
+												  legend: { position: 'bottom' },
+												  height:400,
+												  width:580
+
+												};
+												var chart = new google.visualization.LineChart(document.getElementById('curve_chart_entry+{{school}}'));
+												chart.draw(data, options);
+											  }
+										</script>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">Close
+									</button>
+								</div>
+							</div>
+						</div>
+						{%else%}
+						   -
 						{% endif %}
 						</td>
 					</tr>
