@@ -189,7 +189,7 @@ def search_gov():
                 for y in a.year:
                     attendance_list = []
                     attendance_list.append(int(y.year))
-                    attendance_list.append(int(y.rate))
+                    attendance_list.append(float(y.rate))
                     attendance_rate.append(attendance_list)
                 content['attendence rate'] = attendance_rate
             entry_rate = [['Year', 'Entry Score']]
@@ -197,7 +197,7 @@ def search_gov():
                 for y in s.score:
                     entry_list = []
                     entry_list.append(int(y.year))
-                    entry_list.append(int(y.score))
+                    entry_list.append(float(y.score))
                     entry_rate.append(entry_list)
                 content['entry score'] = entry_rate
             
@@ -221,7 +221,7 @@ def search_gov():
                 for y in a.year:
                     attendance_list = []
                     attendance_list.append(int(y.year))
-                    attendance_list.append(int(y.rate))
+                    attendance_list.append(float(y.rate))
                     attendance_rate.append(attendance_list)
                 content['attendence rate'] = attendance_rate
 
@@ -230,7 +230,7 @@ def search_gov():
                 for y in s.score:
                     entry_list = []
                     entry_list.append(int(y.year))
-                    entry_list.append(int(y.score))
+                    entry_list.append(float(y.score))
                     entry_rate.append(entry_list)
                 content['entry score'] = entry_rate
                 
@@ -241,8 +241,6 @@ def search_gov():
             output[school.name] = content
             address.append(school.street.replace('"', '') + ', ' + school.suburb)
         return output, address
-
-    
 
     if not condition:
         return 'False'
