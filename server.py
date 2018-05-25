@@ -188,16 +188,16 @@ def search_gov():
             for a in Attendance.objects(code=school.code):
                 for y in a.year:
                     attendance_list = []
-                    attendance_list.append(str(y.year))
-                    attendance_list.append(y.rate)
+                    attendance_list.append(int(y.year))
+                    attendance_list.append(int(y.rate))
                     attendance_rate.append(attendance_list)
                 content['attendence rate'] = attendance_rate
             entry_rate = [['Year', 'Entry Score']]
             for s in EntryScore.objects(name=school.name):
                 for y in s.score:
                     entry_list = []
-                    entry_list.append(str(y.year))
-                    entry_list.append(y.score)
+                    entry_list.append(int(y.year))
+                    entry_list.append(int(y.score))
                     entry_rate.append(entry_list)
                 content['entry score'] = entry_rate
             
@@ -220,8 +220,8 @@ def search_gov():
             for a in Attendance.objects(code=school.code):
                 for y in a.year:
                     attendance_list = []
-                    attendance_list.append(str(y.year))
-                    attendance_list.append(y.rate)
+                    attendance_list.append(int(y.year))
+                    attendance_list.append(int(y.rate))
                     attendance_rate.append(attendance_list)
                 content['attendence rate'] = attendance_rate
 
@@ -229,8 +229,8 @@ def search_gov():
             for s in EntryScore.objects(name=school.name):
                 for y in s.score:
                     entry_list = []
-                    entry_list.append(str(y.year))
-                    entry_list.append(y.score)
+                    entry_list.append(int(y.year))
+                    entry_list.append(int(y.score))
                     entry_rate.append(entry_list)
                 content['entry score'] = entry_rate
                 
