@@ -93,12 +93,12 @@ with open('Nongov school.csv','r',encoding = "ISO-8859-1") as f:
 cwd4 = cwd + '/gov school.csv'
 address = "https://data.cese.nsw.gov.au/data/dataset/027493b2-33ad-3f5b-8ed9-37cdca2b8650/resource/2ac19870-44f6-443d-a0c3-4c867f04c305/download/masterdatasetnightlybatchcollections.csv"
 urllib.request.urlretrieve(address, cwd4)
-with open('gov school.csv','r',encoding = "ISO-8859-1") as f:
- f.readline()
- d = csv.reader(f)
- for line in d:
-     gov = Gov(line[0],line[2],line[13],line[22],line[3],line[4],line[5])
-     gov.save()
+with open('gov school.csv', 'r', encoding="ISO-8859-1") as f:
+    f.readline()
+    d = csv.reader(f)
+    for line in d:
+        gov = Gov(line[0], line[2], line[13], line[22], line[3], line[4], line[5], line[6], line[7], line[8], line[9])
+        gov.save()
 
 
 cwd5 = cwd + "/specialist school.csv"
