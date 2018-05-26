@@ -161,14 +161,13 @@ def search_nongov():
             address.append(school.street + ', ' + school.suburb+'nsw')
         return output, address
 
- 
-       
+
 #### look up government school
 @app.route('/school/gov', methods=['GET'])
 def print_gov():
     output,locations = search_gov()
     name_list = list(output.keys())
-    locations_list = google_maps.form_geocode_list(name_list,locations) 
+    locations_list = google_maps.form_geocode_list(name_list,locations)
     return render_template("gov.html",schools=output,locations=locations_list)
 
 def search_gov():
@@ -180,7 +179,7 @@ def search_gov():
     address = []
     count=0
     count2=1000
-    disable_support = False   
+    disable_support = False
     if condition.isdigit():
         output = OrderedDict()
         for school in Gov.objects(postcode=condition):
@@ -191,6 +190,12 @@ def search_gov():
             content['street'] = school.street.replace('"', '')
             content['count']=count
             content['count2'] = count2
+
+            content['schooling'] = school.schooling
+            content['suburb'] = school.suburb
+            content['postcode'] = school.postcode
+            content['code'] = school.code
+
             attendance_rate = [['Year', 'Attendance Rate']]
             for a in Attendance.objects(code=school.code):
                 for y in a.year:
@@ -224,6 +229,12 @@ def search_gov():
             content['street'] = school.street.replace('"', '')
             content['count']=count
             content['count2'] = count2
+
+            content['schooling'] = school.schooling
+            content['suburb'] = school.suburb
+            content['postcode'] = school.postcode
+            content['code'] = school.code
+
             attendance_rate = [['Year', 'Attendance Rate']]
             for a in Attendance.objects(code=school.code):
                 for y in a.year:
@@ -239,7 +250,7 @@ def search_gov():
                     entry_list.append(int(y.year))
                     entry_list.append(float(y.score))
                     entry_rate.append(entry_list)
-                content['entry score'] = entry_rate                
+                content['entry score'] = entry_rate
             for s in Spec.objects(name = school.name):
                 disable_support = True
                 content['disable_support'] = disable_support
