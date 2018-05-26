@@ -95,8 +95,12 @@ class Gov(Document):
     street = StringField(required=True)
     suburb = StringField(required=True)
     postcode = IntField(required=True)
+    phone = StringField(required=True)
+    school_email = StringField(required=True)
+    fax = StringField(required=True)
+    student_number = StringField(required=True)
 
-    def __init__(self, code,name, schooling, school_gender, street, suburb, postcode,*args, **kwargs):
+    def __init__(self, code,name, schooling, school_gender, street, suburb, postcode, phone, school_email, fax, student_number,*args, **kwargs):
         super().__init__(*args, **kwargs)
         self.code = code
         self.name = name
@@ -105,6 +109,10 @@ class Gov(Document):
         self.street = street
         self.suburb = suburb
         self.postcode = postcode
+        self.phone = phone
+        self.school_email = school_email
+        self.fax = fax
+        self.student_number = student_number
 
 class Spec(Document):
     code = IntField(required=True)
