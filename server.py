@@ -87,7 +87,7 @@ with open('Nongov school.csv','r',encoding = "ISO-8859-1") as f:
  f.readline()
  c = csv.reader(f)
  for line in c:
-     nongov = Nongov(line[2],line[6],line[7],line[3],line[4],line[5])
+     nongov = Nongov(line[2],line[6],line[7],line[3],line[4],line[5],line[15],line[8])
      nongov.save()
 
 cwd4 = cwd + '/gov school.csv'
@@ -147,6 +147,8 @@ def search_nongov():
             content = OrderedDict()
             content['school gender'] = school.school_gender
             content['street'] = school.street.replace('"', '')
+            content['school website'] = school.url
+            content['sector'] = school.sector
             output[school.name] = content
             address.append(school.street.replace('"', '') + ', ' + school.suburb+'nsw')     
         return output, address
@@ -157,6 +159,8 @@ def search_nongov():
             content = OrderedDict()
             content['school gender'] = school.school_gender
             content['street'] = school.street.replace('"', '')
+            content['school website'] = school.url
+            content['sector'] = school.sector
             output[school.name] = content
             address.append(school.street.replace('"', '') + ', ' + school.suburb+'nsw')
         return output, address
