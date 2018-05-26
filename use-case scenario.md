@@ -20,6 +20,10 @@
     - suburb
     - postcode
     - code
+    - phone
+    - email
+    - fax
+    - student number
     - special support infomation
 - non-government school   
   - school gender
@@ -28,6 +32,7 @@
     - schooling
     - suburb
     - postcode
+    - website
 
 ## Involved outside API
 --> Google Map API
