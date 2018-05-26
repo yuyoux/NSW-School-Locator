@@ -13,13 +13,14 @@
 - government school   
   - school gender
   - street
-  - selective school entry score
-  - attendance rate
+  - selective school entry score (click to show graph)
+  - attendance rate (click to show graph)
   - specific information 
     - schooling
     - suburb
     - postcode
     - code
+    - special support infomation
 - non-government school   
   - school gender
   - street
