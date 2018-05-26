@@ -3,43 +3,31 @@
 
 ## Input field
 - postcode 
-- suburb
-- name
-- school type
-- code
 
 ## School 
-- government school   
+- government school
 - non-government school   
-- special support school
+
 
 ## Output
 - government school   
-  - schooling
   - school gender
   - street
-  - suburb
-  - postcode
-  - code
   - selective school entry score
   - attendance rate
-  - specific information
+  - specific information 
+    - schooling
+    - suburb
+    - postcode
+    - code
 - non-government school   
-  - schooling
   - school gender
   - street
-  - suburb
-  - postcode
-  - attendance rate
   - specific information
-- special support school
-  - suburb
-  - postcode
-  - code
-  - class type
-  - selective school entry score
-  - attendance rate
-  - specific information
+    - schooling
+    - suburb
+    - postcode
+    - code
 
 ## Involved outside API
 --> Google Map API
@@ -48,4 +36,4 @@
 -  Kaggle Datasets: https://www.kaggle.com/datasets
 - Explore NSW Government Public Datasets: https://data.nsw.gov.au/data/dataset
 
-Last modified: 2018/5/23
+Last modified: 2018/5/26
