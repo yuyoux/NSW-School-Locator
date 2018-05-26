@@ -77,8 +77,10 @@ class Nongov(Document):
     street = StringField(required=True)
     suburb = StringField(required=True)
     postcode = IntField(required=True)
+    url = StringField()
+    sector = StringField()
 
-    def __init__(self, name, schooling, school_gender, street, suburb, postcode,*args, **kwargs):
+    def __init__(self, name, schooling, school_gender, street, suburb, postcode, url, sector,*args, **kwargs):
         super().__init__(*args, **kwargs)
         self.name = name
         self.schooling = schooling
@@ -86,6 +88,8 @@ class Nongov(Document):
         self.street = street
         self.suburb = suburb
         self.postcode = postcode
+        self.url = url
+        self.sector = sector
 
 class Gov(Document):
     code = IntField(required=True)
