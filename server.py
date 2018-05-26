@@ -146,9 +146,9 @@ def search_nongov():
         for school in Nongov.objects(postcode = condition):
             content = OrderedDict()
             content['school gender'] = school.school_gender
-            content['street'] = school.street
+            content['street'] = school.street.replace('"', '')
             output[school.name] = content
-            address.append(school.street + ', ' + school.suburb+'nsw')     
+            address.append(school.street.replace('"', '') + ', ' + school.suburb+'nsw')     
         return output, address
     
     else:
@@ -156,9 +156,9 @@ def search_nongov():
         for school in Nongov.objects(suburb = condition):
             content = OrderedDict()
             content['school gender'] = school.school_gender
-            content['street'] = school.street
+            content['street'] = school.street.replace('"', '')
             output[school.name] = content
-            address.append(school.street + ', ' + school.suburb+'nsw')
+            address.append(school.street.replace('"', '') + ', ' + school.suburb+'nsw')
         return output, address
 
  
