@@ -161,10 +161,10 @@ def search_nongov():
             address.append(school.street + ', ' + school.suburb+'nsw')
         return output, address
 
-
+ 
 #### look up government school
 @app.route('/school/gov', methods=['GET'])
-connect(host='mongodb://yuyoux:yongbao1110@ds231090.mlab.com:31090/9321a3')
+
 def print_gov():
     output,locations = search_gov()
     name_list = list(output.keys())
@@ -179,18 +179,15 @@ def search_gov():
     condition = condition.strip()
     address = []
     count=0
-    count2=1000
     disable_support = False
     if condition.isdigit():
         output = OrderedDict()
         for school in Gov.objects(postcode=condition):
             count+=1
-            count2 +=1
             content = OrderedDict()
             content['school gender'] = school.school_gender
             content['street'] = school.street.replace('"', '')
-            content['count']=count
-            content['count2'] = count2
+            content['count']='a'+str(count)
 
             content['schooling'] = school.schooling
             content['suburb'] = school.suburb
@@ -228,12 +225,10 @@ def search_gov():
         output = OrderedDict()
         for school in Gov.objects(suburb=condition):
             count+=1
-            count2 +=1
             content = OrderedDict()
             content['school gender'] = school.school_gender
             content['street'] = school.street.replace('"', '')
-            content['count']=count
-            content['count2'] = count2
+            content['count']=str(count)
 
             content['schooling'] = school.schooling
             content['suburb'] = school.suburb
@@ -266,10 +261,6 @@ def search_gov():
             output[school.name] = content
             address.append(school.street.replace('"', '') + ', ' + school.suburb+'NSW')
         return output, address
-    if not condition:
-        return 'False''
-
-
 
 if __name__ == "__main__":
     app.run()
