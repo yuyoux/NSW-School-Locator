@@ -28,7 +28,6 @@
     - schooling
     - suburb
     - postcode
-    - code
 
 ## Involved outside API
 --> Google Map API
