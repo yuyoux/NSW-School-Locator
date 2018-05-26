@@ -15,7 +15,7 @@
 		var location_list= {{locations|tojson}}
 		var data = google.visualization.arrayToDataTable( location_list);
 		var options = {
-		zoomLevel: 9,
+		zoomLevel: 10,
 		showTooltip: true,
 		showInfoWindow: true
 		};
@@ -27,21 +27,81 @@
 
 	<div class="container">
 		<div class="col-md-7">
-			<table class="table table-hover">
+			<table class="table table-hover ">
 				<tr>
-					<th>school name</th>
-					<th>school gender</th>
-					<th>street</th>
+					<th>Name</th>
+					<th>Gender</th>
+					<th>Street</th>
 					<th>AR</th>
 					<th>ES</th>
 				</tr>
 				{% if schools %}
 					{% for school in schools %}
 					<tr>
-						<td>{{ school }}
+						<td >
+						<button class="btn btn-xs " style="background:none" data-toggle="modal" data-target="#{{schools[school]['count']|replace('a','b')}}" >
+							{{ school }}
+						</button>
 						{% if schools[school]['disable_support'] %}
 							<span class="glyphicon glyphicon-heart" ></span>
 						{% endif %}
+						<div class="modal fade" id="{{schools[school]['count']|replace('a','b')}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+											&times;
+										</button>
+										<h4 class="modal-title" id="myModalLabel">
+											{{school}} 
+										</h4>
+									</div>
+									<div class="modal-body">
+										<table class="table table-hover">
+										<tbody>
+										<tr>
+										  <td><strong>Schooling</strong></td>
+										  <td>{{schools[school]['schooling']}}</td>
+										</tr>
+										<tr>
+										  <td><strong>Address</strong></td>
+										  <td>{{schools[school]['street']}},{{schools[school]['suburb']}},NSW</td>
+										</tr>
+										{% if schools[school]['phone'] %}
+										<tr>
+										  <td><strong>Phone</strong></td>
+										  <td>{{schools[school]['phone']}}</td>
+										</tr>
+										{% endif %}
+										{% if schools[school]['school email'] %}
+										<tr>
+										  <td><strong>Email</strong></td>
+										  <td>{{schools[school]['school email']}}</td>
+										</tr>
+										{% endif %}
+										{% if schools[school]['fax'] %}
+										<tr>
+										  <td><strong>Fax</strong></td>
+										  <td>{{schools[school]['fax']}}</td>
+										</tr>
+										{% endif %}
+										{% if schools[school]['student number'] %}
+										<tr>
+										  <td><strong>Student Number</strong></td>
+										  <td>{{schools[school]['student number']}}</td>
+										</tr>
+										{% endif %}
+									  </tbody>
+									</table>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">Close
+									</button>
+								</div>
+							</div>
+						</div>
+						
 						</td>
 						<td>{{ schools[school]['school gender'] }}</td>
 						<td>{{ schools[school]['street'] }}</td>
@@ -96,10 +156,10 @@
 						</td>
 						<td>
 						{% if schools[school]['entry score'] %}
-						<button class="btn btn-sm " data-toggle="modal" data-target="#{{schools[school]['count2']}}" >
+						<button class="btn btn-sm " data-toggle="modal" data-target="#{{schools[school]['count']|replace('a','c')}}" >
 							<span class="glyphicon glyphicon-stats" ></span>
 						</button>
-						<div class="modal fade" id="{{schools[school]['count2']}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal fade" id="{{schools[school]['count']|replace('a','c')}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 							<div class="modal-dialog">
 								<div class="modal-content">
 									<div class="modal-header">
