@@ -164,6 +164,7 @@ def search_nongov():
 
 #### look up government school
 @app.route('/school/gov', methods=['GET'])
+connect(host='mongodb://yuyoux:yongbao1110@ds231090.mlab.com:31090/9321a3')
 def print_gov():
     output,locations = search_gov()
     name_list = list(output.keys())
@@ -195,6 +196,10 @@ def search_gov():
             content['suburb'] = school.suburb
             content['postcode'] = school.postcode
             content['code'] = school.code
+            content['phone'] = school.phone
+            content['school email'] = school.school_email
+            content['fax'] = school.fax
+            content['student number'] = school.student_number
 
             attendance_rate = [['Year', 'Attendance Rate']]
             for a in Attendance.objects(code=school.code):
@@ -234,6 +239,10 @@ def search_gov():
             content['suburb'] = school.suburb
             content['postcode'] = school.postcode
             content['code'] = school.code
+            content['phone'] = school.phone
+            content['school email'] = school.school_email
+            content['fax'] = school.fax
+            content['student number'] = school.student_number
 
             attendance_rate = [['Year', 'Attendance Rate']]
             for a in Attendance.objects(code=school.code):
@@ -258,7 +267,7 @@ def search_gov():
             address.append(school.street.replace('"', '') + ', ' + school.suburb+'NSW')
         return output, address
     if not condition:
-        return 'False'
+        return 'False''
 
 
 
