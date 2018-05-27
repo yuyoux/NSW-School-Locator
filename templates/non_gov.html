@@ -6,9 +6,9 @@
 	'packages':['map'],
 	'mapsApiKey': 'AIzaSyDAkguZ-aHXwBGG4E79WDbSHsocwLIyeOU'
 	});
-	google.charts.setOnLoadCallback(drawChart);
-	function drawChart() {
-		var location_list= {{locations|tojson}}
+	google.charts.setOnLoadCallback(drawmap2);
+	function drawmap2() {
+		var location_list= {{locations2|tojson}}
 		var data = google.visualization.arrayToDataTable( location_list);
 		var options = {
 		showTooltip: true,
@@ -21,37 +21,83 @@
 </script>
 
 	<div class="container">
-		<div class="col-md-5">
+		<div class="col-md-7">
 			<table class="table table-hover">
 				<tr>
-					<th>school name</th>
-					<th>school gender</th>
-					<th>street</th>
+					<th>Name</th>
+					<th>Gender</th>
+					<th>Street</th>
+					<th>AR</th>
+					<th>ES</th>
 				</tr>
-				{% if schools %}
-					{% for school in schools %}
+				{% if schools2 %}
+					{% for school in schools2 %}
 					<tr>
-						<td>{{ school }}
-						{% if schools[school]['attendence rate'] or schools[school]['entry score'] %}
-						<button type="button" class="btn btn-xs" onclick="setaction()">
-							<span class="glyphicon glyphicon-stats" ></span>
+						<td>
+						<button class="btn btn-xs " style="background:none" data-toggle="modal" data-target="#{{schools2[school]['count']}}" >
+							{{ school }}
 						</button>
-						{% endif %}
+						<div class="modal fade" id="{{schools2[school]['count']}}" tabindex="-1" role="dialog" aria-labelledby="Label2" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+											&times;
+										</button>
+										<h4 class="modal-title" id="Label2">
+											{{school}} 
+										</h4>
+									</div>
+									<div class="modal-body">
+										<table class="table table-hover">
+										<tbody>
+										<tr>
+										  <td><strong>Schooling</strong></td>
+										  <td>{{schools2[school]['schooling']}}</td>
+										</tr>
+										<tr>
+										  <td><strong>Address</strong></td>
+										  <td>{{schools2[school]['street']}},{{schools2[school]['suburb']}},NSW</td>
+										</tr>
+										{% if schools2[school]['sector'] %}
+										<tr>
+										  <td><strong>Sector</strong></td>
+										  <td>{{schools2[school]['sector']}}</td>
+										</tr>
+										{% endif %}
+										{% if schools2[school]['school website'] %}
+										<tr>
+										  <td><strong>Website</strong></td>
+										  <td>{{schools2[school]['school website']}}</td>
+										</tr>
+										{% endif %}
+										
+									  </tbody>
+									</table>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">Close
+									</button>
+								</div>
+							</div>
+						</div>
 						</td>
-						<td>{{ schools[school]['school gender'] }}</td>
-						<td>{{ schools[school]['street'] }}</td>
+						<td>{{ schools2[school]['school gender'] }}</td>
+						<td>{{ schools2[school]['street'] }}</td>
+						<td> - </td>
+						<td> - </td>
 					</tr>
 					{% endfor %}
 				{% endif %}
 			</table>
 		</div>
-		<div class="col-md-3 pull-right" >
-		{% block chart %}{% endblock %}
-		</div>
-		<div class="col-md-4" id="map_markers_div" style="width: 400px; height: 400px"></div>
+
+		<div class="col-md-5 pull-right" id="map_markers_div" style="width: 400px; height: 400px"></div>
 	</div>
 
 {% endblock private%}
+
 {% block public %}
 	<h3>No data </h3>
 {%endblock%}
