@@ -19,7 +19,6 @@
     - schooling
     - suburb
     - postcode
-    - code
     - phone
     - email
     - fax
@@ -33,6 +32,7 @@
     - suburb
     - postcode
     - website
+    - sector
 
 ## Involved outside API
 --> Google Map API
@@ -41,4 +41,4 @@
 -  Kaggle Datasets: https://www.kaggle.com/datasets
 - Explore NSW Government Public Datasets: https://data.nsw.gov.au/data/dataset
 
-Last modified: 2018/5/26
+Last modified: 2018/5/27
