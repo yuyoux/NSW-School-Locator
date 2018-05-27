@@ -1,6 +1,6 @@
 {% extends 'client.html' %} 
 {% block private %}
-	<h3>No data </h3>
+	<h3>Public School Only </h3>
 {%endblock%}
 
 {% block public %}
@@ -39,7 +39,7 @@
 					{% for school in schools %}
 					<tr>
 						<td >
-						<button class="btn btn-xs " style="background:none" data-toggle="modal" data-target="#{{schools[school]['count']|replace('a','b')}}" >
+						<button class="btn btn-xs " id="info-btn" style="background:none" data-toggle="modal" data-target="#{{schools[school]['count']|replace('a','b')}}" >
 							{{ school }}
 						</button>
 						{% if schools[school]['disable_support'] %}
@@ -107,7 +107,7 @@
 						<td>{{ schools[school]['street'] }}</td>
 						<td>
 						{% if schools[school]['attendence rate'] %}
-						<button class="btn btn-sm " data-toggle="modal" data-target="#{{schools[school]['count']}}" >
+						<button class="btn btn-sm " id="rate-btn" data-toggle="modal" data-target="#{{schools[school]['count']}}" >
 							<span class="glyphicon glyphicon-stats" ></span>
 						</button>
 						<div class="modal fade" id="{{schools[school]['count']}}" tabindex="-1" role="dialog" aria-labelledby="Label1" aria-hidden="true">
@@ -156,7 +156,7 @@
 						</td>
 						<td>
 						{% if schools[school]['entry score'] %}
-						<button class="btn btn-sm " data-toggle="modal" data-target="#{{schools[school]['count']|replace('a','c')}}" >
+						<button class="btn btn-sm " id="btn-entry" data-toggle="modal" data-target="#{{schools[school]['count']|replace('a','c')}}" >
 							<span class="glyphicon glyphicon-stats" ></span>
 						</button>
 						<div class="modal fade" id="{{schools[school]['count']|replace('a','c')}}" tabindex="-1" role="dialog" aria-labelledby="Label3" aria-hidden="true">
