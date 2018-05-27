@@ -35,7 +35,7 @@
 					{% for school in schools %}
 					<tr>
 						<td >
-						<button class="btn btn-xs " style="background:none" data-toggle="modal" data-target="#{{schools[school]['count']|replace('a','b')}}" >
+						<button class="btn btn-xs " id="info-btn" style="background:none" data-toggle="modal" data-target="#{{schools[school]['count']|replace('a','b')}}" >
 							{{ school }}
 						</button>
 						{% if schools[school]['disable_support'] %}
@@ -103,7 +103,7 @@
 						<td>{{ schools[school]['street'] }}</td>
 						<td>
 						{% if schools[school]['attendence rate'] %}
-						<button class="btn btn-sm " data-toggle="modal" data-target="#{{schools[school]['count']}}" >
+						<button class="btn btn-sm " id="rate-btn" data-toggle="modal" data-target="#{{schools[school]['count']}}" >
 							<span class="glyphicon glyphicon-stats" ></span>
 						</button>
 						<div class="modal fade" id="{{schools[school]['count']}}" tabindex="-1" role="dialog" aria-labelledby="Label1" aria-hidden="true">
@@ -152,7 +152,7 @@
 						</td>
 						<td>
 						{% if schools[school]['entry score'] %}
-						<button class="btn btn-sm " data-toggle="modal" data-target="#{{schools[school]['count']|replace('a','c')}}" >
+						<button class="btn btn-sm " id='btn-entry' data-toggle="modal" data-target="#{{schools[school]['count']|replace('a','c')}}" >
 							<span class="glyphicon glyphicon-stats" ></span>
 						</button>
 						<div class="modal fade" id="{{schools[school]['count']|replace('a','c')}}" tabindex="-1" role="dialog" aria-labelledby="Label3" aria-hidden="true">
@@ -217,8 +217,8 @@
 	'packages':['map'],
 	'mapsApiKey': 'AIzaSyDAkguZ-aHXwBGG4E79WDbSHsocwLIyeOU'
 	});
-	google.charts.setOnLoadCallback(drawmap2);
-	function drawmap2() {
+	google.charts.setOnLoadCallback(drawChart_private);
+	function drawChart_private() {
 		var location_list= {{locations2|tojson}}
 		var data = google.visualization.arrayToDataTable( location_list);
 		var options = {
@@ -245,10 +245,10 @@
 					{% for school in schools2 %}
 					<tr>
 						<td>
-						<button class="btn btn-xs " style="background:none" data-toggle="modal" data-target="#{{schools2[school]['count']}}" >
+						<button class="btn btn-xs " id="priinfobtn" style="background:none" data-toggle="modal" data-target="#{{schools2[school]['id']}}" >
 							{{ school }}
 						</button>
-						<div class="modal fade" id="{{schools2[school]['count']}}" tabindex="-1" role="dialog" aria-labelledby="Label2" aria-hidden="true">
+						<div class="modal fade" id="{{schools2[school]['id']}}" tabindex="-1" role="dialog" aria-labelledby="Label2" aria-hidden="true">
 							<div class="modal-dialog">
 								<div class="modal-content">
 									<div class="modal-header">
@@ -307,4 +307,4 @@
 		<div class="col-md-5 pull-right" id="map_markers_div" style="width: 400px; height: 400px"></div>
 	</div>
 
-{% endblock private%}
+{% endblock private %}
