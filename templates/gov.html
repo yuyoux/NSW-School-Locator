@@ -45,14 +45,14 @@
 						{% if schools[school]['disable_support'] %}
 							<span class="glyphicon glyphicon-heart" ></span>
 						{% endif %}
-						<div class="modal fade" id="{{schools[school]['count']|replace('a','b')}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal fade" id="{{schools[school]['count']|replace('a','b')}}" tabindex="-1" role="dialog" aria-labelledby="Label" aria-hidden="true">
 							<div class="modal-dialog">
 								<div class="modal-content">
 									<div class="modal-header">
 										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
 											&times;
 										</button>
-										<h4 class="modal-title" id="myModalLabel">
+										<h4 class="modal-title" id="Label">
 											{{school}} 
 										</h4>
 									</div>
@@ -110,14 +110,14 @@
 						<button class="btn btn-sm " data-toggle="modal" data-target="#{{schools[school]['count']}}" >
 							<span class="glyphicon glyphicon-stats" ></span>
 						</button>
-						<div class="modal fade" id="{{schools[school]['count']}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal fade" id="{{schools[school]['count']}}" tabindex="-1" role="dialog" aria-labelledby="Label1" aria-hidden="true">
 							<div class="modal-dialog">
 								<div class="modal-content">
 									<div class="modal-header">
 										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
 											&times;
 										</button>
-										<h4 class="modal-title" id="myModalLabel">
+										<h4 class="modal-title" id="Label1">
 											{{school}} 
 										</h4>
 									</div>
@@ -159,14 +159,14 @@
 						<button class="btn btn-sm " data-toggle="modal" data-target="#{{schools[school]['count']|replace('a','c')}}" >
 							<span class="glyphicon glyphicon-stats" ></span>
 						</button>
-						<div class="modal fade" id="{{schools[school]['count']|replace('a','c')}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal fade" id="{{schools[school]['count']|replace('a','c')}}" tabindex="-1" role="dialog" aria-labelledby="Label3" aria-hidden="true">
 							<div class="modal-dialog">
 								<div class="modal-content">
 									<div class="modal-header">
 										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
 											&times;
 										</button>
-										<h4 class="modal-title" id="myModalLabel">
+										<h4 class="modal-title" id="Label3">
 											{{school}} 
 										</h4>
 									</div>
@@ -209,7 +209,7 @@
 			</table>
 		</div>
 
-		<div class="col-md-4" id="map_markers_div_gov" style="width: 400px; height: 400px"></div>
+		<div class="col-md-5 pull-right" id="map_markers_div_gov" style="width: 400px; height: 400px"></div>
 	</div>
 
 {% endblock public%}
