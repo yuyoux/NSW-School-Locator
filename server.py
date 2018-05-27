@@ -123,8 +123,8 @@ def search_all():
     output2,locations2 =search_nongov()
     name_list = list(output.keys())
     locations_list = google_maps.form_geocode_list(name_list,locations) 
-    name_list = list(output2.keys())
-    locations_list2 = google_maps.form_geocode_list(name_list,locations2) 
+    name_list2 = list(output2.keys())
+    locations_list2 = google_maps.form_geocode_list(name_list2,locations2) 
     return render_template("all.html",schools = output,locations=locations_list,schools2=output2,locations2=locations_list2)
 
 
@@ -133,7 +133,7 @@ def print_nongov():
     output,locations = search_nongov()
     name_list = list(output.keys())
     locations_list = google_maps.form_geocode_list(name_list,locations) 
-    return render_template("non_gov.html",schools=output,locations=locations_list)
+    return render_template("non_gov.html",schools2=output,locations2=locations_list)
 
 def search_nongov():
     parser = reqparse.RequestParser()
@@ -141,14 +141,19 @@ def search_nongov():
     args = parser.parse_args()
     condition = args.get("condition")
     address = list()
+    count=0
     if condition.isdigit():
         output = OrderedDict()
         for school in Nongov.objects(postcode = condition):
+            count+=1
             content = OrderedDict()
             content['school gender'] = school.school_gender
+            content['schooling'] = school.schooling
+            content['suburb'] = school.suburb
             content['street'] = school.street.replace('"', '')
             content['school website'] = school.url
             content['sector'] = school.sector
+            content['id']=count
             output[school.name] = content
             address.append(school.street.replace('"', '') + ', ' + school.suburb+'nsw')     
         return output, address
@@ -156,11 +161,15 @@ def search_nongov():
     else:
         output = OrderedDict()
         for school in Nongov.objects(suburb = condition):
+            count+=1
             content = OrderedDict()
             content['school gender'] = school.school_gender
+            content['schooling'] = school.schooling
+            content['suburb'] = school.suburb
             content['street'] = school.street.replace('"', '')
             content['school website'] = school.url
             content['sector'] = school.sector
+            content['id']=count
             output[school.name] = content
             address.append(school.street.replace('"', '') + ', ' + school.suburb+'nsw')
         return output, address
