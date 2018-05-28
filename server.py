@@ -151,6 +151,7 @@ def search_nongov():
             content = OrderedDict()
             content['school gender'] = school.school_gender
             content['schooling'] = school.schooling
+            content['postcode'] = school.postcode
             content['suburb'] = school.suburb
             content['street'] = school.street.replace('"', '')
             content['school website'] = school.url
@@ -168,6 +169,7 @@ def search_nongov():
             content['school gender'] = school.school_gender
             content['schooling'] = school.schooling
             content['suburb'] = school.suburb
+            content['postcode'] = school.postcode
             content['street'] = school.street.replace('"', '')
             content['school website'] = school.url
             content['sector'] = school.sector
