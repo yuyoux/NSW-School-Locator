@@ -24,14 +24,7 @@
 	a:active {color: #CACFD2}
 	</style>
 	
-	<style type="text/css">
-    .icon {
-       width: 1em; height: 1em;
-       vertical-align: -0.15em;
-       fill: currentColor;
-       overflow: hidden;
-    }
-	</style>
+
 </head>
 <body>
 	<!-- form submit action set -->
@@ -99,6 +92,7 @@
 		</div>
 		<div class="col-md-12 row text-center" >
 			<label class="row col-md-12 text-center" style="font-size:15px;color:white">Nope COM9321 Project</label>
+			
 		</div>
 	</div>
 	<div class="col-md-12">
@@ -109,11 +103,9 @@
 		</ul>
 		<div  class="tab-content " >
 			<div class="tab-pane fade in active" id="private">
-				<h3>Private School</h3>
 				{% block private %}{%endblock%}
 			</div>
 			<div class="tab-pane fade" id="public" >
-				<h3>Public School</h3>
 				{% block public %}{%endblock%}
 			</div>
 		</div>
