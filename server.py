@@ -9,7 +9,7 @@ import datetime
 from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer)
 import jxmlease
 import csv
-from model import Attendance, Year, EntryScore, Score, Nongov, Gov, Spec, GoogleMaps
+from modal import Attendance, Year, EntryScore, Score, Nongov, Gov, Spec, GoogleMaps
 from pip._internal import locations
 
 
