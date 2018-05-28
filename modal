@@ -30,7 +30,7 @@ class GoogleMaps(object):
             res.append(geo)
         return res   
    
-        
+   
 class Year(EmbeddedDocument):
     year = IntField(required=True)
     rate = StringField()
