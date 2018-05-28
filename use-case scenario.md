@@ -3,34 +3,34 @@
 
 ## Input field
 - postcode 
+- suburb
 
 ## School 
 - government school
 - non-government school   
 
-
 ## Output
-- government school   
+- government school  
+  - school name
   - school gender
   - street
   - selective school entry score (click to show graph)
   - attendance rate (click to show graph)
   - specific information 
     - schooling
-    - suburb
-    - postcode
+    - address
     - phone
     - email
     - fax
     - student number
     - special support infomation
 - non-government school   
+  - school name
   - school gender
   - street
   - specific information
     - schooling
-    - suburb
-    - postcode
+    - address
     - website
     - sector
 
