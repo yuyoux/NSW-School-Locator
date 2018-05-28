@@ -36,9 +36,10 @@
 
 ## Involved outside API
 --> Google Map API
+--> Google Chart API
 
 ## Data Sources
 -  Kaggle Datasets: https://www.kaggle.com/datasets
-- Explore NSW Government Public Datasets: https://data.nsw.gov.au/data/dataset
+-  Explore NSW Government Public Datasets: https://data.nsw.gov.au/data/dataset
 
-Last modified: 2018/5/27
+Last modified: 2018/5/28
