@@ -57,7 +57,7 @@
 										</tr>
 										<tr>
 										  <td><strong>Address</strong></td>
-										  <td>{{schools2[school]['street']}},{{schools2[school]['suburb']}},NSW</td>
+										  <td>{{schools2[school]['street']}},{{schools2[school]['suburb']}},NSW,{{schools2[school]['postcode']}}</td>
 										</tr>
 										{% if schools2[school]['sector'] %}
 										<tr>
@@ -66,6 +66,10 @@
 										</tr>
 										{% endif %}
 										{% if schools2[school]['school website'] %}
+										<tr>
+										  <td><strong>Website</strong></td>
+										  <td>{{schools2[school]['school website']}}</td>
+										</tr>
 										<tr>
 										  <td><strong>Website</strong></td>
 										  <td>{{schools2[school]['school website']}}</td>
